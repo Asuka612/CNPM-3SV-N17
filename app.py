@@ -57,5 +57,11 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("login"))
 
+@app.route("/MakeAppointment.html")
+def appointment():
+    page = request.args.get("page")
+    pages = int(page) if page is not None else 1
+    return render_template("MakeAppointment.html", pages=pages)
+
 if __name__ == "__main__":
     app.run(debug=True)

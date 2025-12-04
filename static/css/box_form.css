@@ -1,0 +1,12 @@
+background: #f0f8ff;
+body { font-family: Arial; }
+        .box {
+            width: 350px; margin: 80px auto; padding: 30px;
+            background: white; border-radius: 10px; box-shadow: 0 0 15px #aaa;
+        }
+        input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #ccc; }
+        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .link { font-size: 14px; margin-top: 10px; text-align: center; }
+        .link a { color: #007bff; text-decoration: none; }
+        .link a:hover { text-decoration: underline; }

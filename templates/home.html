@@ -1,157 +1,13 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dental Trio</title>
+{%extends 'layout/base.html'%}
 
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: url("/static/images/medical_bg.jpg") center/cover no-repeat fixed;
-        }
-
-        /* HEADER */
-        header {
-            background-color: rgba(0, 48, 87, 0.65);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-
-        .header-title {
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        nav a {
-            color: #F0FFFF;
-            text-decoration: none;
-            margin-left: 25px;
-            font-size: 17px;
-            font-weight: bold;
-        }
-
-        nav i {
-            margin-right: 6px;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        /* HERO section */
-        .hero {
-            margin-top: 130px;
-            text-align: center;
-            color: white;
-            text-shadow: 0 0 8px black;
-            padding-bottom: 80px;
-        }
-
-        .hero h1 {
-            font-size: 46px;
-            margin: 0;
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin-top: 10px;
-        }
-
-        /* BELOW SECTIONS */
-        .section {
-            background: rgba(255,255,255,0.9);
-            padding: 50px 30px;
-            text-align: center;
-        }
-
-        .section h2 {
-            font-size: 30px;
-            margin-bottom: 20px;
-            color: #003057;
-        }
-
-        .section p {
-            font-size: 17px;
-            width: 70%;
-            margin: auto;
-            color: #333;
-        }
-
-        /* SERVICES */
-        .services {
-            display: flex;
-            justify-content: center;
-            gap: 35px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .service-box {
-            width: 250px;
-            padding: 25px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #bbb;
-            text-align: center;
-        }
-
-        .service-box i {
-            font-size: 40px;
-            color: #007bff;
-            margin-bottom: 15px;
-        }
-
-        /* FOOTER */
-        footer {
-            background: #002942;
-            color: white;
-            text-align: center;
-            padding: 20px 10px;
-            margin-top: 0;
-        }
-
-        footer p {
-            margin: 5px 0;
-        }
-    </style>
-</head>
-
+{%block content%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 <body>
-
-    <!-- HEADER -->
-    <header>
-        <div class="header-title">
-            <i class="fas fa-tooth"></i> Phòng khám Dental Trio
-        </div>
-
-        <nav>
-          <a href="/"><i class="fa-solid fa-house"></i>Trang chủ</a>
-            <a href="#"><i class="fa-solid fa-stethoscope"></i>Dịch vụ</a>
-            <a href="#"><i class="fa-solid fa-phone"></i>Liên hệ</a>
-           <a href="/register"><i class="fa-solid fa-user-plus"></i>Đăng ký</a>
-
-        </nav>
-    </header>
-
-
     <!-- HERO -->
     <div class="hero">
         <h1>Chăm sóc nụ cười của bạn</h1>
         <p>Nơi mang đến những trải nghiệm nha khoa tốt nhất</p>
     </div>
-
 
     <!-- ABOUT SECTION -->
     <div class="section">
@@ -161,7 +17,6 @@
             trang thiết bị hiện đại và môi trường thân thiện, thoải mái cho mọi khách hàng.
         </p>
     </div>
-
 
     <!-- SERVICES SECTION -->
     <div class="section" style="padding-top: 30px;">
@@ -193,14 +48,6 @@
             </div>
         </div>
     </div>
-
-
-    <!-- FOOTER -->
-    <footer>
-        <p>📍 123 Đường ABC, Quận ABC, TP.HCM</p>
-        <p>📞 Hotline: 0909 123 456</p>
-        <p>&copy; 2025 Dental Trio. All rights reserved.</p>
-    </footer>
-
 </body>
+{%endblock%}
 </html>
