@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Thuốc - Dental Trio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { font-family: Arial; margin: 0; background: #f4f6f8; }
+        header { background-color: #003057; color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+        header a { color: white; text-decoration: none; margin-left: 12px; }
+        .container { max-width: 1100px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 12px #ccc; }
+        h2 { color: #003057; }
+        form { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+        form input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+        form input[type="text"], form input[type="number"] { width: 200px; }
+        button { padding: 10px 14px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f0f8ff; }
+    </style>
+</head>
+<body>
+<header>
+    <div><i class="fas fa-pills"></i> Quản Lý Thuốc</div>
+    <div>
+        <span>👨‍⚕️ {{ username }}</span>
+        &nbsp;|&nbsp;
+        <a href="/dashboard">Dashboard</a>
+        &nbsp;|&nbsp;
+        <a href="/logout">Đăng xuất</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>Thuốc sử dụng cho bệnh nhân</h2>
+
+    <form action="/medicine/add" method="POST">
+        <input type="text" name="name" placeholder="Tên thuốc" required>
+        <input type="text" name="dosage" placeholder="Liều dùng (ví dụ: 1 viên sáng/1 viên tối)" required>
+        <input type="number" name="days" placeholder="Số ngày" required>
+        <input type="text" name="unit" placeholder="Đơn vị (viên/ml)" required>
+        <button type="submit">Thêm thuốc</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tên thuốc</th>
+                <th>Liều dùng</th>
+                <th>Số ngày</th>
+                <th>Đơn vị</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in medicines %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ m.name }}</td>
+                <td>{{ m.dosage }}</td>
+                <td>{{ m.days }}</td>
+                <td>{{ m.unit }}</td>
+                <td>
+                    <form action="/medicine/delete/{{ m.id }}" method="POST" onsubmit="return confirm('Xác nhận xóa?')">
+                        <button type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" style="text-align:center;color:#666;">Chưa có thuốc nào</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -2,65 +2,44 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - Dental Trio</title>
+    <title>Dashboard Bác Sĩ - Dental Trio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        body { font-family: Arial; margin: 0; background: #f4f6f8; }
-        header {
-            background-color: #003057;
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        body { font-family: Arial; margin: 0; background: #eef2f5; }
+        header { background-color: #003057; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
         header a { color: white; text-decoration: none; margin-left: 20px; }
-        .container { max-width: 1000px; margin: 30px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 15px #ccc; }
+        .container { max-width: 1000px; margin: 30px auto; }
         h1 { color: #003057; }
-        .card-container { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
-        .card {
-            flex: 1 1 200px;
-            background: #007bff;
-            color: white;
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .card:hover { background: #0056b3; }
+        .card-container { display: flex; gap: 20px; flex-wrap: wrap; }
+        .card { flex: 1 1 300px; background: #007bff; color: white; padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 18px; }
         .card i { font-size: 40px; margin-bottom: 10px; display: block; }
+        .card:hover { background-color: #0056b3; }
         footer { text-align: center; padding: 15px; color: #555; margin-top: 40px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div><i class="fas fa-tooth"></i> Dental Trio</div>
+    <div><i class="fas fa-tooth"></i> Dental Trio - Bác sĩ</div>
     <div>
-       Xin chào, {{ username }} |
+        <span>👨‍⚕️ {{ username }}</span>
+        &nbsp;|&nbsp;
         <a href="/logout">Đăng xuất</a>
     </div>
 </header>
 
 <div class="container">
-    <h1>Dashboard Khách Hàng</h1>
+    <h1>Bảng điều khiển</h1>
+
     <div class="card-container">
-        <div class="card" onclick="alert('Chức năng đặt lịch chưa có')">
-            <i class="fas fa-calendar-check"></i>
-            Đặt Lịch Hẹn
+        <div class="card" onclick="window.location.href='/treatment'">
+            <i class="fas fa-file-medical"></i>
+            Lập Phiếu Điều Trị
         </div>
-        <div class="card" onclick="alert('Chức năng xem dịch vụ chưa có')">
-            <i class="fas fa-tooth"></i>
-            Dịch Vụ
-        </div>
-        <div class="card" onclick="alert('Chức năng thông tin cá nhân chưa có')">
-            <i class="fas fa-user"></i>
-            Thông Tin Cá Nhân
-        </div>
-        <div class="card" onclick="alert('Chức năng liên hệ chưa có')">
-            <i class="fas fa-phone"></i>
-            Liên Hệ
+
+        <div class="card" onclick="window.location.href='/medicine'">
+            <i class="fas fa-pills"></i>
+            Quản Lý Thuốc
         </div>
     </div>
 </div>
