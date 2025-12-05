@@ -1,0 +1,10 @@
+html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url("/static/images/medical_bg.jpg") center/cover no-repeat fixed;
+        }
+

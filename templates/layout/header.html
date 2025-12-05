@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/box_form.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<header>
+    <div class="header-title">
+        <i class="fas fa-tooth"></i> Phòng khám Dental Trio
+    </div>
+    <nav>
+        <a href="/"><i class="fa-solid fa-house"></i>Trang chủ</a>
+        <a href="#"><i class="fa-solid fa-stethoscope"></i>Dịch vụ</a>
+        <a href="#"><i class="fa-solid fa-phone"></i>Liên hệ</a>
+        {% if current_user.is_authenticated%}
+
+        <a href="/login">
+            <img src="{{current_user.avatar}}" width="25">
+            Chào {{current_user.name}}!
+        </a>
+
+        <a href="/logout"><img
+                src="https://cdn-icons-png.flaticon.com/128/1286/1286907.png"
+                width="25">
+            Đăng xuất</a>
+
+        {%else%}
+        <a href="/login"><i class="fa-solid fa-user-plus"></i>Đăng nhập</a>
+        {% endif %}
+
+    </nav>
+    <form class="d-flex">
+        <a href="/MakeAppointment.html">
+            <button type="button" class="appointment-btn">
+                Đặt lịch hẹn
+            </button>
+        </a>
+
+    </form>
+</header>
