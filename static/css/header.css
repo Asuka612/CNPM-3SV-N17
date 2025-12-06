@@ -28,11 +28,16 @@ header {
             text-decoration: underline;
         }
 
+nav form {
+    display: inline-block;
+    margin-left: 25px;
+}
+
 .appointment-btn {
     padding: 1rem 1.5rem;
-    font-size: rem;
     font-weight: bold;
     border-radius: 2rem;
     transition: 0.25s ease;
 }
+
 
