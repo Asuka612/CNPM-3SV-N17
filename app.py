@@ -3,7 +3,10 @@ import math
 import dao
 from __init__ import app, login #, admin
 from flask_login import login_user, current_user, logout_user
-
+import os
+import json
+from datetime import datetime
+from flask import render_template, request, redirect
 from models import User, UserRole
 
 # app = Flask(__name__)
@@ -148,6 +151,60 @@ def appointment():
 @login.user_loader
 def get_user(user_id):
     return dao.get_user_by_id(user_id)
+
+
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+BILLS_FILE = os.path.join(DATA_DIR, "bills.json")
+
+
+def load_bills():
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
+    if not os.path.exists(BILLS_FILE):
+        with open(BILLS_FILE, "w", encoding="utf-8") as f:
+            json.dump([], f)
+    with open(BILLS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_bills(bills):
+    with open(BILLS_FILE, "w", encoding="utf-8") as f:
+        json.dump(bills, f, ensure_ascii=False, indent=2)
+
+
+@app.route("/cashier", methods=["GET", "POST"])
+def cashier_page():
+    if request.method == "POST":
+        name = request.form.get("patient_name", "Khách")
+        selected_treat_ids = request.form.getlist("treat_ids")
+        selected_med_ids = request.form.getlist("med_ids")
+
+        selected_treats = [t for t in treatments if str(t["id"]) in selected_treat_ids]
+        selected_medicines = [m for m in medicines if str(m["id"]) in selected_med_ids]
+
+        total_treat = sum(t.get("cost", 0) for t in selected_treats)
+        total_med = sum(m.get("price", 0) for m in selected_medicines)
+        total = total_treat + total_med
+
+        bill = {
+            "id": int(datetime.now().timestamp()),
+            "patient_name": name,
+            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "treatments": selected_treats,
+            "medicines": selected_medicines,
+            "total": total
+        }
+
+        bills = load_bills()
+        bills.append(bill)
+        save_bills(bills)
+
+        return render_template("receipt.html", bill=bill)
+
+    return render_template("cashier.html",
+                           treatments=treatments,
+                           medicines=medicines)
 
 if __name__ == "__main__":
     app.run(debug=True)

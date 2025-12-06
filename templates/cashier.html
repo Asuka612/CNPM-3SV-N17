@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Thu ngân</title>
+</head>
+<body>
+    <h2>Thu Ngân - Tính tiền</h2>
+
+    <form method="post" action="/cashier">
+        <label>Tên bệnh nhân:</label>
+        <input type="text" name="patient_name" placeholder="Nhập tên bệnh nhân">
+
+        <h3>Dịch vụ</h3>
+        <table border="1" cellpadding="5">
+            <tr><th>Chọn</th><th>Tên</th><th>Giá</th></tr>
+            {% for t in treatments %}
+            <tr>
+                <td><input type="checkbox" name="treat_ids" value="{{ t.id }}"></td>
+                <td>{{ t.service }}</td>
+                <td>{{ t.cost }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Thuốc</h3>
+        <table border="1" cellpadding="5">
+            <tr><th>Chọn</th><th>Tên thuốc</th><th>Giá</th></tr>
+            {% for m in medicines %}
+            <tr>
+                <td><input type="checkbox" name="med_ids" value="{{ m.id }}"></td>
+                <td>{{ m.name }}</td>
+                <td>{{ m.price if m.price else 0 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <button type="submit">Thanh toán</button>
+    </form>
+
+    <br>
+    <a href="/">Quay về trang chủ</a>
+</body>
+</html>
