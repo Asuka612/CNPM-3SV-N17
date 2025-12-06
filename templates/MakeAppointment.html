@@ -5,39 +5,50 @@
 <body>
 <div class="box">
 
-<form action="/" style="">
-    <div class="mb-3 mt-3">
-        <label for="name" class="form-label">Họ và tên:</label>
-        <input type="text" class="form-control" id="name" placeholder="Hãy nhập tên của bạn" name="name">
-    </div>
-    <div class="mb-3 row g-3 align-items-center">
-        <div class="col-md-6">
-            <label for="day">Chọn ngày:</label>
-            <input type="date" id="day" name="day">
+{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="/MakeAppointment.html" method="POST">
+        <div class="mb-3 mt-3">
+            <label for="name" class="form-label">Họ và tên:</label>
+            <input type="text" class="form-control" id="name" placeholder="Hãy nhập tên của bạn" name="name">
         </div>
-        <div class="col-md-6">
-            <label for="time">Chọn giờ:</label>
-            <input type="time" id="time" name="time">
+        <div class="mb-3 row g-3 align-items-center">
+            <div class="col-md-6">
+                <label for="day">Chọn ngày:</label>
+                <input type="date" class="form-control" id="day" name="day"> </div>
+            <div class="col-md-6">
+                <label for="time">Chọn giờ:</label>
+                <input type="time" class="form-control" id="time" name="time"> </div>
         </div>
-    </div>
-    <div class="mb-3">
-        <label for="dentist" class="form-label">Bác sĩ:</label>
-        <select class="form-select" id="dentist" name="dentist">
-            <option>Phạm Trần Hữu Khánh</option>
-            <option>Nguyễn Hoài An</option>
-            <option>Nguyễn Anh Khoa</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="service" class="form-label">Dịch vụ:</label>
-        <select class="form-select" id="service" name="service">
-            <option>Trồng răng</option>
-            <option>Trám răng</option>
-            <option>Cạo cao răng</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Đặt lịch ngay</button>
-</form>
+        <div class="mb-3">
+            <label for="dentist" class="form-label">Bác sĩ:</label>
+            <select class="form-select" id="dentist" name="dentist">
+                <option>Phạm Trần Hữu Khánh</option>
+                <option>Nguyễn Hoài An</option>
+                <option>Nguyễn Anh Khoa</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="service" class="form-label">Dịch vụ:</label>
+            <select class="form-select" id="service" name="service">
+                <option>Trồng răng</option>
+                <option>Trám răng</option>
+                <option>Cạo cao răng</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Đặt lịch ngay</button>
+    </form>
 </div>
 </body>
 {%endblock%}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, flash
 import math
 import dao
 from __init__ import app, login #, admin
@@ -61,7 +61,7 @@ def login_my_user():
             if user.role == UserRole.ADMIN:
                 return redirect('/dashboard')  # Trang dành cho admin
             else:
-                return redirect('/')  # Trang dành cho quản lý/chuyên môn
+                return redirect('/MakeAppointment.html')  # Trang dành cho quản lý/chuyên môn
 
         else:
             err_msg = "Tài khoản hoặc mật khẩu không đúng!"
@@ -139,8 +139,18 @@ def medicine_delete(item_id):
     medicines = [m for m in medicines if m["id"] != item_id]
     return redirect('/medicine')
 
-@app.route("/MakeAppointment.html")
+@app.route("/MakeAppointment.html", methods=['GET','POST'])
 def appointment():
+    name = request.form.get("name")
+    day = request.form.get("day")
+    time = request.form.get("time")
+    dentist = request.form.get("dentist")
+    service = request.form.get("service")
+    if not name or not day or not time:
+        flash("Vui lòng điền đầy đủ Tên, Ngày và Giờ!", "danger")  # 'danger' để hiện màu đỏ
+    else:
+        flash(f"Đặt lịch thành công cho {name} vào lúc {time} ngày {day}!", "success")
+        redirect('MakeAppointment.html')
     page = request.args.get("page")
     pages = int(page) if page is not None else 1
     return render_template("MakeAppointment.html", pages=pages)
