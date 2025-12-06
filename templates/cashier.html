@@ -1,44 +1,67 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Thu ngân</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
     <h2>Thu Ngân - Tính tiền</h2>
 
     <form method="post" action="/cashier">
-        <label>Tên bệnh nhân:</label>
-        <input type="text" name="patient_name" placeholder="Nhập tên bệnh nhân">
+        <div class="mb-3">
+            <label for="patient_name" class="form-label">Tên bệnh nhân:</label>
+            <input type="text" class="form-control" id="patient_name" name="patient_name" placeholder="Nhập tên bệnh nhân">
+        </div>
 
         <h3>Dịch vụ</h3>
-        <table border="1" cellpadding="5">
-            <tr><th>Chọn</th><th>Tên</th><th>Giá</th></tr>
-            {% for t in treatments %}
-            <tr>
-                <td><input type="checkbox" name="treat_ids" value="{{ t.id }}"></td>
-                <td>{{ t.service }}</td>
-                <td>{{ t.cost }}</td>
-            </tr>
-            {% endfor %}
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Chọn</th>
+                    <th>Tên dịch vụ</th>
+                    <th>Giá (VNĐ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in treatments %}
+                <tr>
+                    <td><input type="checkbox" name="treat_ids" value="{{ item.id }}"></td>
+                    <td>{{ item.service }}</td>
+                    <td>{{ "{:,}".format(item.cost) }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3" class="text-center text-muted">Chưa có dịch vụ nào</td></tr>
+                {% endfor %}
+            </tbody>
         </table>
 
         <h3>Thuốc</h3>
-        <table border="1" cellpadding="5">
-            <tr><th>Chọn</th><th>Tên thuốc</th><th>Giá</th></tr>
-            {% for m in medicines %}
-            <tr>
-                <td><input type="checkbox" name="med_ids" value="{{ m.id }}"></td>
-                <td>{{ m.name }}</td>
-                <td>{{ m.price if m.price else 0 }}</td>
-            </tr>
-            {% endfor %}
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Chọn</th>
+                    <th>Tên thuốc</th>
+                    <th>Liều dùng</th>
+                    <th>Số ngày</th>
+                    <th>Đơn vị</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in medicines %}
+                <tr>
+                    <td><input type="checkbox" name="med_ids" value="{{ m.id }}"></td>
+                    <td>{{ m.name }}</td>
+                    <td>{{ m.dosage }}</td>
+                    <td>{{ m.days }}</td>
+                    <td>{{ m.unit }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="text-center text-muted">Chưa có thuốc nào</td></tr>
+                {% endfor %}
+            </tbody>
         </table>
 
-        <button type="submit">Thanh toán</button>
+        <button type="submit" class="btn btn-primary mt-3">Thanh toán</button>
     </form>
 
     <br>
-    <a href="/">Quay về trang chủ</a>
-</body>
-</html>
+    <a href="/" class="btn btn-secondary">Quay về trang chủ</a>
+</div>
+{% endblock %}
