@@ -1,0 +1,6 @@
+[
+  { "MaLoThuoc": "LT001", "MaThuoc": "TH001", "SoLuongTon": 500 },
+  { "MaLoThuoc": "LT002", "MaThuoc": "TH002", "SoLuongTon": 1000 },
+  { "MaLoThuoc": "LT003", "MaThuoc": "TH003", "SoLuongTon": 300 },
+  { "MaLoThuoc": "LT004", "MaThuoc": "TH001", "SoLuongTon": 250 }
+]

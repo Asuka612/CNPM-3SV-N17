@@ -1,0 +1,12 @@
+[
+  { "MaDichVu": "DV001", "TenDichVu": "Cạo vôi", "ChiPhi": 300000, "MoTa": "Làm sạch vôi răng và mảng bám" },
+  { "MaDichVu": "DV002", "TenDichVu": "Tẩy trắng", "ChiPhi": 2500000, "MoTa": "Làm trắng răng bằng công nghệ cao" },
+  { "MaDichVu": "DV003", "TenDichVu": "Trám răng", "ChiPhi": 500000, "MoTa": "Điều trị sâu răng" },
+  { "MaDichVu": "DV004", "TenDichVu": "Nhổ răng", "ChiPhi": 800000, "MoTa": "Nhổ răng khôn hoặc răng bị hư" },
+  { "MaDichVu": "DV005", "TenDichVu": "Chữa tủy", "ChiPhi": 1500000, "MoTa": "Điều trị nội nha" },
+  { "MaDichVu": "DV006", "TenDichVu": "Chỉnh nha", "ChiPhi": 20000000, "MoTa": "Niềng răng mắc cài hoặc trong suốt" },
+  { "MaDichVu": "DV007", "TenDichVu": "Răng sứ", "ChiPhi": 5000000, "MoTa": "Làm mão răng sứ thẩm mỹ hoặc bảo vệ" },
+  { "MaDichVu": "DV008", "TenDichVu": "Implant", "ChiPhi": 35000000, "MoTa": "Cấy ghép trụ Titanium phục hồi răng mất" },
+  { "MaDichVu": "DV009", "TenDichVu": "Tiểu phẫu", "ChiPhi": 1000000, "MoTa": "Cắt chóp răng, loại bỏ u nang nhỏ" },
+  { "MaDichVu": "DV010", "TenDichVu": "Khám TMH", "ChiPhi": 200000, "MoTa": "Khám và tư vấn tổng quát tình trạng răng miệng" }
+]

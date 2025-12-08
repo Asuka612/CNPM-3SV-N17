@@ -1,0 +1,6 @@
+[
+  { "MaLichKham": "LK001", "MaNhaSi": "ND001", "MaKhachHang": "ND004", "NgayKham": "2025-11-27", "GioKham": "09:00:00" },
+  { "MaLichKham": "LK002", "MaNhaSi": "ND001", "MaKhachHang": "ND005", "NgayKham": "2025-11-27", "GioKham": "10:00:00" },
+  { "MaLichKham": "LK003", "MaNhaSi": "ND002", "MaKhachHang": "ND006", "NgayKham": "2025-11-27", "GioKham": "14:30:00" },
+  { "MaLichKham": "LK004", "MaNhaSi": "ND003", "MaKhachHang": "ND007", "NgayKham": "2025-11-28", "GioKham": "08:30:00" }
+]

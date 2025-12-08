@@ -1,0 +1,26 @@
+[
+  {
+    "MaTaiKhoan": "TK001",
+    "MaNguoiDung": "ND001",
+    "TenDangNhap": "drnguyena",
+    "MatKhau": "pass123"
+  },
+  {
+    "MaTaiKhoan": "TK002",
+    "MaNguoiDung": "ND002",
+    "TenDangNhap": "drtranb",
+    "MatKhau": "pass123"
+  },
+  {
+    "MaTaiKhoan": "TK003",
+    "MaNguoiDung": "ND004",
+    "TenDangNhap": "khphamd",
+    "MatKhau": "pass123"
+  },
+  {
+    "MaTaiKhoan": "TK004",
+    "MaNguoiDung": "ND005",
+    "TenDangNhap": "khvoe",
+    "MatKhau": "pass123"
+  }
+]

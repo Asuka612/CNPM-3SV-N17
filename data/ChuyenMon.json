@@ -1,0 +1,8 @@
+[
+  { "MaChuyenMon": "CM001", "TenChuyenMon": "Nha khoa Tổng quát", "MoTa": "Khám, điều trị và phòng ngừa cơ bản" },
+  { "MaChuyenMon": "CM002", "TenChuyenMon": "Nha khoa Thẩm mỹ", "MoTa": "Tẩy trắng, bọc sứ, veneer" },
+  { "MaChuyenMon": "CM003", "TenChuyenMon": "Nội nha", "MoTa": "Điều trị tủy răng" },
+  { "MaChuyenMon": "CM004", "TenChuyenMon": "Nha chu", "MoTa": "Điều trị bệnh nướu và mô quanh răng" },
+  { "MaChuyenMon": "CM005", "TenChuyenMon": "Cấy ghép Implant", "MoTa": "Phục hình răng bị mất" },
+  { "MaChuyenMon": "CM006", "TenChuyenMon": "Hành chính Kế toán", "MoTa": "Quản lý tài chính và hồ sơ" }
+]

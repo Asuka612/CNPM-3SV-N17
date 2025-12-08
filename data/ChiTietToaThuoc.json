@@ -1,0 +1,5 @@
+[
+  { "MaToaThuoc": "TT001", "MaThuoc": "TH001", "SoNgayDung": "2025-12-03", "SoLuong": 14, "DonVi": "Viên", "GhiChu": "Uống 2 lần/ngày, sau ăn" },
+  { "MaToaThuoc": "TT001", "MaThuoc": "TH002", "SoNgayDung": "2025-12-03", "SoLuong": 10, "DonVi": "Viên", "GhiChu": "Uống khi đau" },
+  { "MaToaThuoc": "TT002", "MaThuoc": "TH003", "SoNgayDung": "2025-12-04", "SoLuong": 21, "DonVi": "Viên", "GhiChu": "Uống 3 lần/ngày, sau ăn" }
+]

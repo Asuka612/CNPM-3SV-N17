@@ -1,0 +1,12 @@
+[
+  { "MaNguoiDung": "ND001", "Ho": "Nguyễn Văn", "Ten": "A", "NgaySinh": "1985-05-15", "GioiTinh": "M", "SDT": "0901112233" },
+  { "MaNguoiDung": "ND002", "Ho": "Trần Thị", "Ten": "B", "NgaySinh": "1990-10-20", "GioiTinh": "F", "SDT": "0904445566" },
+  { "MaNguoiDung": "ND003", "Ho": "Lê Hoàng", "Ten": "C", "NgaySinh": "1978-01-08", "GioiTinh": "M", "SDT": "0917778899" },
+  { "MaNguoiDung": "ND004", "Ho": "Phạm Minh", "Ten": "D", "NgaySinh": "1995-03-22", "GioiTinh": "M", "SDT": "0981234567" },
+  { "MaNguoiDung": "ND005", "Ho": "Võ Thanh", "Ten": "E", "NgaySinh": "2000-11-30", "GioiTinh": "F", "SDT": "0979876543" },
+  { "MaNguoiDung": "ND006", "Ho": "Đỗ Thị", "Ten": "F", "NgaySinh": "1989-07-12", "GioiTinh": "F", "SDT": "0965554433" },
+  { "MaNguoiDung": "ND007", "Ho": "Hoàng Văn", "Ten": "G", "NgaySinh": "1975-02-01", "GioiTinh": "M", "SDT": "0932109876" },
+  { "MaNguoiDung": "ND008", "Ho": "Nguyễn Thanh", "Ten": "H", "NgaySinh": "1992-04-10", "GioiTinh": "F", "SDT": "0912345678" },
+  { "MaNguoiDung": "ND009", "Ho": "Trần Minh", "Ten": "I", "NgaySinh": "1988-08-25", "GioiTinh": "M", "SDT": "0918765432" },
+  { "MaNguoiDung": "ND010", "Ho": "Lý Thị", "Ten": "K", "NgaySinh": "1995-12-01", "GioiTinh": "F", "SDT": "0915556677" }
+]
