@@ -26,8 +26,7 @@ def home():
     # Hiển thị home (nếu muốn hiển tên khi đã login có thể truyền session)
     # username = current_user.username
     page = request.args.get("page")
-    return render_template("home.html", page=page) #, username=username
-
+    return render_template("home.html", page=page)  # , username=username
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
