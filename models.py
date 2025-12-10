@@ -29,21 +29,7 @@ class User(Base, UserMixin):
                     default='https://cdn-icons-png.flaticon.com/128/18388/18388709.png')
     role = Column(Enum(UserRole),default=UserRole.USER)
 
-
-# class Category(Base):
-#     products = relationship('Product', backref="category", lazy=True)
-
-# class Product(Base):
-#     image = Column(String(500),
-#                    default="https://e7.pngegg.com/pngimages/10/205/png-clipart-computer-icons-error-information-error-angle-triangle-thumbnail.png")
-#     price = Column(Float, default=0.0)
-#     cate_id = Column(Integer, ForeignKey(Category.id), nullable=False)
-#     description = Column(Text)
-
-
-
-
-#---------------------<<FAKE DATA NHA KHOA>>---------------------
+# ---------------------<<FAKE DATA NHA KHOA>>---------------------
 class ChuyenMon(db.Model):
     __tablename__ = 'ChuyenMon'
     MaChuyenMon = Column(String(10), primary_key=True)
@@ -52,6 +38,7 @@ class ChuyenMon(db.Model):
 
     NhaSi = relationship('NhaSi', backref='ChuyenMon', lazy=True)
     KeToan = relationship('KeToan', backref='ChuyenMon', lazy=True)
+
 
 class NguoiDung(db.Model):
     __tablename__ = 'NguoiDung'
@@ -67,6 +54,7 @@ class NguoiDung(db.Model):
     KeToan = relationship('KeToan', backref='NguoiDung', lazy=True)
     TaiKhoan = relationship('TaiKhoan', backref='NguoiDung', lazy=True)
 
+
 class NhaSi(db.Model):
     __tablename__ = 'NhaSi'
     MaNhaSi = Column(String(10), ForeignKey('NguoiDung.MaNguoiDung'), primary_key=True)
@@ -78,6 +66,7 @@ class NhaSi(db.Model):
     PhieuDieuTri = relationship('PhieuDieuTri', backref='NhaSi', lazy=True)
     ToaThuoc = relationship('ToaThuoc', backref='NhaSi', lazy=True)
 
+
 class KhachHang(db.Model):
     __tablename__ = 'KhachHang'
     MaKhachHang = Column(String(10), ForeignKey('NguoiDung.MaNguoiDung'), primary_key=True)
@@ -86,11 +75,13 @@ class KhachHang(db.Model):
     LichKham = relationship('LichKham', backref='KhachHang', lazy=True)
     PhieuDieuTri = relationship('PhieuDieuTri', backref='KhachHang', lazy=True)
 
+
 class KeToan(db.Model):
     __tablename__ = 'KeToan'
     MaKeToan = Column(String(10), ForeignKey('NguoiDung.MaNguoiDung'), primary_key=True)
     MaChuyenMon = Column(String(10), ForeignKey('ChuyenMon.MaChuyenMon'))
     NgayNhanViec = Column(Date)
+
 
 class TaiKhoan(db.Model):
     __tablename__ = 'TaiKhoan'
@@ -98,6 +89,7 @@ class TaiKhoan(db.Model):
     MaNguoiDung = Column(String(10), ForeignKey('NguoiDung.MaNguoiDung'))
     TenDangNhap = Column(String(50), unique=True, nullable=False)
     MatKhau = Column(String(100), nullable=False)
+
 
 class DichVu(db.Model):
     __tablename__ = 'DichVu'
@@ -107,6 +99,7 @@ class DichVu(db.Model):
     MoTa = Column(String(255))
 
     ChiTietPhieuDieuTri = relationship('ChiTietPhieuDieuTri', backref='DichVu', lazy=True)
+
 
 class Thuoc(db.Model):
     __tablename__ = 'Thuoc'
@@ -119,6 +112,7 @@ class Thuoc(db.Model):
     ChiTietLoThuoc = relationship('ChiTietLoThuoc', backref='Thuoc', lazy=True)
     ChiTietToaThuoc = relationship('ChiTietToaThuoc', backref='Thuoc', lazy=True)
 
+
 class LoThuoc(db.Model):
     __tablename__ = 'LoThuoc'
     MaLoThuoc = Column(String(10), primary_key=True)
@@ -127,11 +121,13 @@ class LoThuoc(db.Model):
 
     ChiTietLoThuoc = relationship('ChiTietLoThuoc', backref='LoThuoc', lazy=True)
 
+
 class ChiTietLoThuoc(db.Model):
     __tablename__ = 'ChiTietLoThuoc'
     MaLoThuoc = Column(String(10), ForeignKey('LoThuoc.MaLoThuoc'), primary_key=True)
     MaThuoc = Column(String(10), ForeignKey('Thuoc.MaThuoc'), primary_key=True)
     SoLuongTon = Column(Integer)
+
 
 class LichKham(db.Model):
     __tablename__ = 'LichKham'
@@ -140,6 +136,7 @@ class LichKham(db.Model):
     MaKhachHang = Column(String(10), ForeignKey('KhachHang.MaKhachHang'))
     NgayKham = Column(Date)
     GioKham = Column(Time)
+
 
 class PhieuDieuTri(db.Model):
     __tablename__ = 'PhieuDieuTri'
@@ -152,11 +149,13 @@ class PhieuDieuTri(db.Model):
     ChiTiet = relationship('ChiTietPhieuDieuTri', backref='PhieuDieuTri', lazy=True)
     ToaThuoc = relationship('ToaThuoc', backref='PhieuDieuTri', lazy=True)
 
+
 class ChiTietPhieuDieuTri(db.Model):
     __tablename__ = 'ChiTietPhieuDieuTri'
     MaPhieuDieuTri = Column(String(10), ForeignKey('PhieuDieuTri.MaPhieuDieuTri'), primary_key=True)
     MaDichVu = Column(String(10), ForeignKey('DichVu.MaDichVu'), primary_key=True)
     GhiChu = Column(String(255))
+
 
 class ToaThuoc(db.Model):
     __tablename__ = 'ToaThuoc'
@@ -166,6 +165,7 @@ class ToaThuoc(db.Model):
     NgayLap = Column(Date)
 
     ChiTiet = relationship('ChiTietToaThuoc', backref='ToaThuoc', lazy=True)
+
 
 class ChiTietToaThuoc(db.Model):
     __tablename__ = 'ChiTietToaThuoc'
@@ -180,22 +180,7 @@ class ChiTietToaThuoc(db.Model):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-        # c1 = Category(name="Laptop")
-        # c2 = Category(name="Mobile")
-        # c3 = Category(name="Tablet")
-        #
-        # db.session.add_all([c1, c2, c3])
-        #
-        # with open("saleApp/data/product.json", encoding="utf-8") as f:
-        #     products = json.load(f)
-        #
-        #     for p in products:
-        #         db.session.add(Product(**p))
-
-
-
-
-#---------------------<<THÊM DATA VÀO CSDL NHA KHOA>>---------------------
+        # ---------------------<<THÊM DATA VÀO CSDL NHA KHOA>>---------------------
         # ChuyenMon
         with open('data/ChuyenMon.json', encoding='utf-8') as f:
             data = json.loads(f.read())
@@ -285,6 +270,11 @@ if __name__ == "__main__":
             data = json.loads(f.read())
             for v in data:
                 db.session.add(ChiTietToaThuoc(**v))
+        password = hashlib.md5("123".encode("utf-8")).hexdigest()
+        u1 = User(name="Khoa", gmail="tp281973555k@gmail.com", password=password, role=UserRole.USER)
+
+        db.session.add(u1)
+
         password = hashlib.md5("123".encode("utf-8")).hexdigest()
         u1 = User(name="Khoa", gmail="tp281973555k@gmail.com", password=password, role=UserRole.USER)
 
