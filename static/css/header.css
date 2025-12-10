@@ -12,7 +12,7 @@ header {
             font-weight: bold;
         }
 
-        nav a {
+        nav>a {
             color: #F0FFFF;
             text-decoration: none;
             margin-left: 25px;

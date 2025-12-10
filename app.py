@@ -1,7 +1,11 @@
+import hashlib
+from os.path import exists
+import pdb
+
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 import math
 import dao
-from __init__ import app, login #, admin
+from __init__ import app, login, db  # , admin
 from flask_login import login_user, current_user, logout_user
 import os
 import json
@@ -14,36 +18,52 @@ from models import User, UserRole
 
 # Lưu tạm (in-memory)
 users = {}
-treatments = []   # mỗi item: {"id": int, "service": str, "cost": int, "note": str}
-medicines = []    # mỗi item: {"id": int, "name": str, "dosage": str, "days": int, "unit": str}
+treatments = []  # mỗi item: {"id": int, "service": str, "cost": int, "note": str}
+medicines = []  # mỗi item: {"id": int, "name": str, "dosage": str, "days": int, "unit": str}
+
 
 # Helper để tạo id tự tăng
 def next_id(collection):
     return (collection[-1]["id"] + 1) if collection else 1
 
+
 @app.route("/")
 def home():
-    # Hiển thị home (nếu muốn hiển tên khi đã login có thể truyền session)
-    # username = current_user.username
     page = request.args.get("page")
     return render_template("home.html", page=page)  # , username=username
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         name = request.form["name"]
-        email = request.form["email"]
-        username = request.form["username"]
+        gmail = request.form["email"]
         password = request.form["password"]
         confirm = request.form["confirm"]
 
         if password != confirm:
-            return "Xác nhận mật khẩu không khớp!"
-        if username in users:
-            return "Tài khoản đã tồn tại!"
-
-        users[username] = {"name": name, "email": email, "password": password}
-        return redirect("/login")
+            flash("Xác nhận mật khẩu không khớp!", "danger")
+        else:
+            existing_user = User.query.filter(User.gmail == gmail).first()
+            if existing_user:
+                flash("Tài khoản này đã được đăng ký", "danger")
+            else:
+                password = hashlib.md5(password.encode("utf-8")).hexdigest()
+                user = User(
+                    name=name,
+                    gmail=gmail,
+                    password=password
+                )
+                try:
+                    db.session.add(user)
+                    db.session.commit()
+                    flash("Đăng ký thành công! Vui lòng đăng nhập để tiếp tục!", "success")
+                    return redirect('/login')
+                except:
+                    db.session.rollback()
+                    flash("Hệ thống đã bị lỗi! Xin vui lòng thử lại sau", "danger")
     return render_template("register.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login_my_user():
@@ -59,7 +79,9 @@ def login_my_user():
         user = dao.auth_user(gmail, password)
 
         if user:
+
             login_user(user)
+
             if user.role == UserRole.ADMIN:
                 return redirect('/dashboard')  # Trang dành cho admin
             else:
@@ -69,21 +91,25 @@ def login_my_user():
             err_msg = "Tài khoản hoặc mật khẩu không đúng!"
     return render_template("login.html", err_msg=err_msg)
 
+
 @app.route("/dashboard")
 def dashboard():
     username = current_user.name
     return render_template("dashboard.html", username=username)
+
 
 @app.route('/logout')
 def logout_my_user():
     logout_user()
     return redirect('/')
 
+
 # ---------- Treatment (Lập phiếu điều trị) ----------
 @app.route("/treatment", methods=["GET"])
 def treatment():
     username = current_user.name
     return render_template("treatment.html", username=username, treatments=treatments)
+
 
 @app.route("/treatment/add", methods=["POST"])
 def treatment_add():
@@ -103,17 +129,20 @@ def treatment_add():
     treatments.append(item)
     return redirect('/treatment')
 
+
 @app.route("/treatment/delete/<int:item_id>", methods=["POST", "GET"])
 def treatment_delete(item_id):
     global treatments
     treatments = [t for t in treatments if t["id"] != item_id]
     return redirect('/treatment')
 
+
 # ---------- Medicine (Quản lý thuốc) ----------
 @app.route("/medicine", methods=["GET"])
 def medicine():
     username = current_user.name
     return render_template("medicine.html", username=username, medicines=medicines)
+
 
 @app.route("/medicine/add", methods=["POST"])
 def medicine_add():
@@ -135,13 +164,15 @@ def medicine_add():
     medicines.append(item)
     return redirect('/medicine')
 
+
 @app.route("/medicine/delete/<int:item_id>", methods=["POST", "GET"])
 def medicine_delete(item_id):
     global medicines
     medicines = [m for m in medicines if m["id"] != item_id]
     return redirect('/medicine')
 
-@app.route("/MakeAppointment.html", methods=['GET','POST'])
+
+@app.route("/MakeAppointment.html", methods=['GET', 'POST'])
 def appointment():
     name = request.form.get("name")
     day = request.form.get("day")
@@ -157,9 +188,11 @@ def appointment():
     pages = int(page) if page is not None else 1
     return render_template("MakeAppointment.html", pages=pages)
 
+
 @login.user_loader
 def get_user(user_id):
     return dao.get_user_by_id(user_id)
+
 
 @app.context_processor
 def detect_role_user():
@@ -217,6 +250,7 @@ def cashier_page():
     return render_template("cashier.html",
                            treatments=treatments,
                            medicines=medicines)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
