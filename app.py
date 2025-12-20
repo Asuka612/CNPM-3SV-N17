@@ -472,6 +472,8 @@ def admin_dashboard():
         "low_stock_medicines": low_stock_medicines
     }
 
-    return render_template("admin.html", stats=stats)
+    return render_template("Admin/admin.html", stats=stats)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

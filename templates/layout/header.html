@@ -9,7 +9,10 @@
     </div>
 
     <nav>
-        <a href="/"><i class="fa-solid fa-house"></i> Trang chủ</a>
+     <a href="{% if current_user.is_authenticated and current_user.Role == UserRole.ADMIN %}/admin{% else %}/{% endif %}">
+    <i class="fa-solid fa-house"></i> Trang chủ
+</a>
+
 
         <div class="dropdown">
             <a>

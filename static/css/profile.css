@@ -1,0 +1,56 @@
+/* static/css/profile.css */
+
+/* Wrapper để căn giữa toàn bộ khung */
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+/* Khung trắng bao quanh nội dung */
+.profile-container {
+    background-color: #ffffff;  /* nền trắng */
+    padding: 30px 40px;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Avatar căn giữa */
+.profile-avatar {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Các form-group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Button */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
