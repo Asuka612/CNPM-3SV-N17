@@ -1,4 +1,5 @@
 import enum
+import hashlib
 from datetime import datetime
 from flask import json
 from flask_sqlalchemy import SQLAlchemy
@@ -32,7 +33,7 @@ class NguoiDung(Base):
 
     HoVaTen = Column(String(200), nullable=False)
     NgaySinh = Column(Date, nullable=True)
-    GioiTinh = Column(Enum(GioiTinh),default=GioiTinh.NAM, nullable=False)
+    GioiTinh = Column(Enum(GioiTinh),default=GioiTinh.NAM, nullable=True)
     SDT = Column(String(15), nullable=True)
     type = Column(String(50))
 
@@ -111,9 +112,9 @@ class LichKham(Base):
 
     NhaSiId = Column(Integer, ForeignKey('NhaSi.id'), nullable=False)
     KhachHangId = Column(Integer, ForeignKey('KhachHang.id'), nullable=False)
+    DichVuId = Column(Integer, ForeignKey('DichVu.id'), nullable=False)
     NgayKham = Column(Date)
     GioKham = Column(Time)
-    GhiChu = Column(String(255))
 
     benh_nhan = relationship('KhachHang', backref='ds_lich_kham', lazy=True)
 

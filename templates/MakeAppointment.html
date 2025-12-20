@@ -2,59 +2,58 @@
 
 {%block content%}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/box_form.css') }}">
+<script src="{{ url_for('static', filename='js/MakeAppointment.js') }}"></script>
 <body>
 <div class="box">
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="container mt-3">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     {% endwith %}
 
-    <form action="/MakeAppointment.html" method="POST">
+    <form action="/MakeAppointment" method="POST">
         <div class="mb-3 mt-3">
             <label for="name" class="form-label">Họ và tên:</label>
-            <input type="text" class="form-control" id="name" placeholder="Hãy nhập tên của bạn" name="name">
+            <input type="text" class="form-control" id="name" placeholder="Hãy nhập tên của bạn" name="name" required>
         </div>
-        <div class="mb-3 row g-3 align-items-center">
-            <div class="col-md-6">
-                <label for="day">Chọn ngày:</label>
-                <input type="date" class="form-control" id="day" name="day"> </div>
-            <div class="col-md-6">
-                <label for="time">Chọn giờ:</label>
-                <input type="time" class="form-control" id="time" name="time"> </div>
-        </div>
-<div class="mb-3">
-    <label for="dentist" class="form-label">Bác sĩ:</label>
-    <select class="form-select" id="dentist" name="dentist">
-            {%for n in nhasi%}
-            <option>{{n.Ho}} {{n.Ten}}</option>
-            {%endfor%}
-<!--            <option>Phạm Trần Hữu Khánh</option>-->
-<!--            <option>Nguyễn Hoài An</option>-->
-<!--            <option>Nguyễn Anh Khoa</option>-->
-        </select>
-</div>
 
+        <div>
+            <label for="day">Chọn ngày:</label>
+            <input type="date" class="form-control" id="day" name="day" required>
+        </div>
+        <div>
+            <label for="time">Chọn giờ (08:00 - 17:00):</label>
+            <input type="text" class="form-control flatpickr-time" id="time" name="time" placeholder="Chọn giờ..."
+                   required>
+            <small id="timeHelp" class="form-text text-danger"></small>
+        </div>
 
         <div class="mb-3">
-    <label for="service" class="form-label">Dịch vụ:</label>
-    <select class="form-select" id="service" name="service">
-        {% for dv in services %}
-    <option value="{{ dv.MaDichVu }}">
-        {{ dv.TenDichVu }}
-    </option>
-{% endfor %}
-
-    </select>
-</div>
+            <label for="dentist" class="form-label">Bác sĩ:</label>
+            <select class="form-select" id="dentist" name="dentist">
+                {%for n in dentists%}
+                <option value="{{n.id}}">{{n.HoVaTen}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="service" class="form-label">Dịch vụ:</label>
+            <select class="form-select" id="service" name="service">
+                {% for dv in services %}
+                <option value="{{ dv.id }}">
+                    {{ dv.TenDichVu }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Đặt lịch ngay</button>
     </form>
 </div>

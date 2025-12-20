@@ -1,85 +1,60 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Lập Phiếu Điều Trị - Dental Trio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        body { font-family: Arial; margin: 0; background: #f4f6f8; }
-        header { background-color: #003057; color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
-        header a { color: white; text-decoration: none; margin-left: 12px; }
-        .container { max-width: 1100px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 12px #ccc; }
-        h2 { color: #003057; }
-        form { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
-        form input, form textarea { padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
-        form input[type="text"], form input[type="number"] { width: 240px; }
-        form textarea { width: 100%; min-height: 60px; }
-        button { padding: 10px 14px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-        th { background: #f0f8ff; }
-        .actions form { display: inline; }
-    </style>
-</head>
-<body>
-<header>
-    <div><i class="fas fa-file-medical"></i> Phiếu Điều Trị</div>
-    <div>
-        <span>👨‍⚕️ {{ username }}</span>
-        &nbsp;|&nbsp;
-        <a href="/dashboard">Quay lại</a>
-        &nbsp;|&nbsp;
-        <a href="/logout">Đăng xuất</a>
-    </div>
-</header>
+{% extends 'layout/base.html' %}
+{% block content %}
 
-<div class="container">
-    <h2>Lập Phiếu Điều Trị</h2>
+<h2>Lập Phiếu Điều Trị</h2>
 
-    <form action="/treatment/add" method="POST">
-        <select name="service" class="form-select" required>
-    <option value="">-- Chọn dịch vụ --</option>
-    {% for dv in services %}
-        <option value="{{ dv.MaDichVu }}">
-            {{ dv.TenDichVu }}
-        </option>
-    {% endfor %}
-</select>
-
-        <input type="number" name="cost" placeholder="Chi phí (VNĐ)" required>
-        <textarea name="note" placeholder="Ghi chú (nếu có)"></textarea>
-        <button type="submit">Thêm phiếu</button>
-    </form>
-
-    <table>
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Dịch vụ</th>
-                <th>Chi phí (VNĐ)</th>
-                <th>Ghi chú</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in treatments %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ item.service }}</td>
-                <td>{{ "{:,}".format(item.cost) }}</td>
-                <td>{{ item.note }}</td>
-                <td class="actions">
-                    <form action="/treatment/delete/{{ item.id }}" method="POST" onsubmit="return confirm('Xác nhận xóa?')">
-                        <button type="submit">Xóa</button>
-                    </form>
-                </td>
-            </tr>
-            {% else %}
-            <tr><td colspan="5" style="text-align:center;color:#666;">Chưa có phiếu điều trị nào</td></tr>
+<form action="/treatment/add" method="POST">
+    <div class="mb-3">
+        <label for="service" class="form-label">Dịch vụ:</label>
+        <select class="form-select" id="service" name="service">
+            {% for dv in services %}
+            <option value="{{ dv.id }}">
+                {{ dv.TenDichVu }}
+            </option>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+        </select>
+    </div>
+    <input type="number" name="cost" placeholder="Chi phí (VNĐ)" required>
+    <textarea name="note" placeholder="Ghi chú"></textarea>
+    <button type="submit">Thêm</button>
+</form>
 
-</body>
-</html>
+<table>
+    <tr>
+        <th>#</th>
+        <th>Dịch vụ</th>
+        <th>Chi phí</th>
+        <th>Ghi chú</th>
+        <th></th>
+    </tr>
+
+    {% for t in treatments %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>
+            {% for dv in services %}
+            {% if dv.MaDichVu == t.service %}
+            {{ dv.TenDichVu }}
+            {% endif %}
+            {% endfor %}
+        </td>
+        <td>{{ "{:,}".format(t.cost) }}</td>
+        <td>{{ t.note }}</td>
+        <td>
+            <form action="/treatment/delete/{{ t.id }}" method="POST">
+                <button>Xóa</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="5">Chưa có phiếu điều trị</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<form action="/treatment/save" method="POST">
+    <button type="submit">💾 Lưu phiếu điều trị</button>
+</form>
+
+{% endblock %}

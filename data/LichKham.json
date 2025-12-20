@@ -1,5 +1,5 @@
 [
-  {"id": 1, "NhaSiId": 3, "KhachHangId": 5, "NgayKham": "2026-01-05", "GioKham": "08:00:00", "GhiChu": "Đau răng hàm"},
-  {"id": 2, "NhaSiId": 4, "KhachHangId": 6, "NgayKham": "2026-01-12", "GioKham": "09:30:00", "GhiChu": "Tư vấn niềng răng"},
-  {"id": 3, "NhaSiId": 3, "KhachHangId": 7, "NgayKham": "2026-01-02", "GioKham": "14:00:00", "GhiChu": "Cạo vôi"}
+  {"id": 1, "NhaSiId": 3, "KhachHangId": 5, "DichVuId": 1, "NgayKham": "2026-01-05", "GioKham": "08:00:00"},
+  {"id": 2, "NhaSiId": 4, "KhachHangId": 6, "DichVuId": 2, "NgayKham": "2026-01-12", "GioKham": "09:30:00"},
+  {"id": 3, "NhaSiId": 3, "KhachHangId": 7, "DichVuId": 3, "NgayKham": "2026-01-02", "GioKham": "14:00:00"}
 ]

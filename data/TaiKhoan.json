@@ -1,9 +1,9 @@
 [
-  {"id": 1, "NguoiDungId": 1, "Email": "admin@phongkham.com", "MatKhau": "123456", "Role": "ADMIN"},
-  {"id": 2, "NguoiDungId": 2, "Email": "ketoan@phongkham.com", "MatKhau": "123456", "Role": "KETOAN"},
-  {"id": 3, "NguoiDungId": 3, "Email": "nhasi1@phongkham.com", "MatKhau": "123456", "Role": "NHASI"},
-  {"id": 4, "NguoiDungId": 4, "Email": "nhasi2@phongkham.com", "MatKhau": "123456", "Role": "NHASI"},
-  {"id": 5, "NguoiDungId": 5, "Email": "khach1@gmail.com", "MatKhau": "123456", "Role": "KHACHHANG"},
-  {"id": 6, "NguoiDungId": 6, "Email": "khach2@gmail.com", "MatKhau": "123456", "Role": "KHACHHANG"},
-  {"id": 7, "NguoiDungId": 7, "Email": "khach3@gmail.com", "MatKhau": "123456", "Role": "KHACHHANG"}
+  {"id": 1, "NguoiDungId": 1, "Email": "admin@phongkham.com", "MatKhau": "202cb962ac59075b964b07152d234b70", "Role": "ADMIN"},
+  {"id": 2, "NguoiDungId": 2, "Email": "ketoan@phongkham.com", "MatKhau": "202cb962ac59075b964b07152d234b70", "Role": "KETOAN"},
+  {"id": 3, "NguoiDungId": 3, "Email": "nhasi1@phongkham.com", "MatKhau": "202cb962ac59075b964b07152d234b70", "Role": "NHASI"},
+  {"id": 4, "NguoiDungId": 4, "Email": "nhasi2@phongkham.com", "MatKhau": "202cb962ac59075b964b07152d234b70", "Role": "NHASI"},
+  {"id": 5, "NguoiDungId": 5, "Email": "khach1@gmail.com", "MatKhau": "202cb962ac59075b964b07152d234b70", "Role": "KHACHHANG"},
+  {"id": 6, "NguoiDungId": 6, "Email": "khach2@gmail.com", "MatKhau": "202cb962ac59075b964b07152d234b70", "Role": "KHACHHANG"},
+  {"id": 7, "NguoiDungId": 7, "Email": "khach3@gmail.com", "MatKhau": "202cb962ac59075b964b07152d234b70", "Role": "KHACHHANG"}
 ]

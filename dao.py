@@ -1,72 +1,26 @@
 import hashlib
 import json
-
 from click import password_option
-
-from models import User #, Category, Product
 from __init__ import app
-from models import TaiKhoan, NguoiDung, NhaSi #, Category, Product
+from models import TaiKhoan, NguoiDung, NhaSi , DichVu, Thuoc
 from __init__ import app, db
-# def load_category():
-#     # with open("data/category.json", encoding="utf-8") as f:
-#     #     return json.load(f)
-#     return Category.query.all()
 
-# def load_product(q=None, cate_id =None, page=None):
-#     # with open("data/product.json", encoding="utf-8") as f:
-#     #     products = json.load(f)
-#     #
-#     #     if q:
-#     #         products =[p for p in products if p["name"].find(q)>=0]
-#     #
-#     #     if cate_id:
-#     #         products = [p for p in products if p["cate_id"].__eq__(int(cate_id))]
-#     #     return products
-#     query = Product.query
-#
-#     if q:
-#         query = query.filter(Product.name.contains(q))
-#
-#     if cate_id:
-#         query = query.filter(Product.cate_id.__eq__(cate_id))
-#
-#     if page:
-#         size = app.config["PAGE_SIZE"]
-#         start = (int(page)-1) * size
-#         end = start + size
-#         query = query.slice(start, end)
-#
-#     return query.all()
-
-# def count_product():
-#     return Product.query.count()
 def load_nhasi():
-    return db.session.query(NguoiDung.Ho, NguoiDung.Ten).join(NhaSi).all()
+    return db.session.query(NhaSi).all()
+
 def auth_user(gmail, password):
     password = hashlib.md5(password.encode("utf-8")).hexdigest()
-    return User.query.filter(User.gmail.__eq__(gmail), User.password.__eq__(password)).first()
+    return TaiKhoan.query.filter(TaiKhoan.Email.__eq__(gmail), TaiKhoan.MatKhau.__eq__(password)).first()
 
 def get_user_by_id(user_id):
-    return User.query.get(user_id)
-
-# def get_product_by_id(id):
-#     # with open("data/product.json", encoding="utf-8") as f:
-#     #     products = json.load(f)
-#     #
-#     #     for p in products:
-#     #         if p["id"].__eq__(id):
-#     #             return p
-#     # return None
-#     return Product.query.get(id)
-from models import DichVu
+    return TaiKhoan.query.get(user_id)
 
 def load_dich_vu():
     return DichVu.query.all()
-from models import Thuoc
 
 def load_thuoc():
     return Thuoc.query.all()
 
 if __name__=="__main__":
     with app.app_context():
-        print(auth_user("tp281973555k@gmail.com","123"))
+        print(load_nhasi())

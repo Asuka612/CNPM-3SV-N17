@@ -2,85 +2,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/box_form.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<style>
-    nav {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    /* Dropdown */
-    .dropdown {
-        position: relative;
-    }
-
-    .dropdown > a {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        cursor: pointer;
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background: #ffffff;
-        top: 34px;
-        left: 0;
-        min-width: 230px;
-        border-radius: 10px;
-        overflow: hidden;
-        z-index: 99;
-        box-shadow: 0px 8px 15px rgba(0,0,0,0.18);
-        border: 1px solid #e2e2e2;
-    }
-
-    .dropdown-content a {
-        padding: 12px 14px;
-        display: flex;
-        font-size: 15px;
-        text-decoration: none;
-        color: #222;
-        transition: 0.25s;
-        border-bottom: 1px solid #eee;
-    }
-
-    .dropdown-content a:last-child {
-        border-bottom: none;
-    }
-
-    .dropdown-content a:hover {
-        background: #e0f2ff;
-        padding-left: 18px;
-        color: #0088cc;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
-
-    /* Button login - appointment */
-    .appointment-btn {
-        background: #0077cc;
-        border: none;
-        padding: 8px 14px;
-        border-radius: 6px;
-        font-size: 14px;
-        color: #fff;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    .appointment-btn:hover {
-        background: #005fa3;
-    }
-
-    nav img {
-        border-radius: 50%;
-        vertical-align: middle;
-        margin-right: 5px;
-    }
-</style>
 
 <header>
     <div class="header-title">
@@ -90,49 +11,45 @@
     <nav>
         <a href="/"><i class="fa-solid fa-house"></i> Trang chủ</a>
 
-      <div class="dropdown">
-    <a>
-        <i class="fa-solid fa-stethoscope"></i> Dịch vụ
-    </a>
-
-    <div class="dropdown-content">
-        {% for dv in services %}
-            <a href="/service/{{ dv.MaDichVu }}">
-                <i class="fa-solid fa-angle-right"></i> {{ dv.TenDichVu }}
+        <div class="dropdown">
+            <a>
+                <i class="fa-solid fa-stethoscope"></i> Dịch vụ
             </a>
-        {% endfor %}
-    </div>
-</div>
 
-
-
+            <div class="dropdown-content">
+                {% for dv in services %}
+                <a href="#"><!--href="/service/{{ dv.MaDichVu }}"-->
+                    <i class="fa-solid fa-angle-right"></i> {{ dv.TenDichVu }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
 
         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tp281973555k@gmail.com" target="_blank">
             <i class="fa-solid fa-phone"></i> Liên hệ
         </a>
 
         {% if current_user.is_authenticated %}
+        <a href="/login">
+            <img src="{{ current_user.Avatar }}" width="28">
+            Chào {{ current_user.nguoi_dung.HoVaTen }}!
+        </a>
 
-            <a href="/login">
-                <img src="{{ current_user.avatar }}" width="28">
-                Chào {{ current_user.name }}!
-            </a>
-
-            <a href="/logout">
-                <img src="https://cdn-icons-png.flaticon.com/128/1286/1286907.png" width="25">
-                Đăng xuất
-            </a>
+        <a href="/logout">
+            <img src="https://cdn-icons-png.flaticon.com/128/1286/1286907.png" width="25">
+            Đăng xuất
+        </a>
 
         {% else %}
-            <a href="/login">
-                <button class="appointment-btn"><i class="fa-solid fa-user-plus"></i> Đăng nhập để đặt lịch hẹn</button>
-            </a>
+        <a href="/login">
+            <button class="appointment-btn"><i class="fa-solid fa-user-plus"></i> Đăng nhập để đặt lịch hẹn</button>
+        </a>
         {% endif %}
 
-        {% if current_user.role == UserRole.USER %}
-            <a href="/MakeAppointment.html">
-                <button class="appointment-btn">Đặt lịch hẹn</button>
-            </a>
+        {% if current_user.Role == UserRole.KHACHHANG %}
+        <a class="appointment-btn" href="/MakeAppointment">
+            Đặt lịch hẹn
+        </a>
         {% endif %}
     </nav>
 </header>
