@@ -1,54 +1,91 @@
 {% extends 'layout/base.html' %}
 {% block content %}
+<script src="{{ url_for('static', filename='js/medicine.js') }}"></script>
 
-<h2>Quản Lý Thuốc</h2>
+<h2>Kê Toa Thuốc (Phiếu điều trị #{{ toa_thuoc.PhieuDieuTriId }})</h2>
 
-<form action="/medicine/add" method="POST">
-    <select name="name" required>
-        <option value="">Chọn thuốc</option>
-        {% for t in available_medicines %}
-            <option value="{{ t.TenThuoc }}">{{ t.TenThuoc }}</option>
-        {% endfor %}
-    </select>
+<form class="bg-white p-3 rounded shadow-sm" method="POST" action="/medicine/add">
 
-    <input type="text" name="dosage" placeholder="Liều dùng" required>
-    <input type="number" name="days" placeholder="Số ngày" required>
-    <input type="text" name="unit" placeholder="Đơn vị" required>
-    <button type="submit">Thêm</button>
+    <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
+
+    <div class="form-group">
+        <label>Chọn thuốc (Chỉ hiện thuốc có lô HSD > 10 ngày)</label>
+        <select name="thuoc_id" class="form-control" id="thuocSelect" required>
+            <option value="">-- Chọn thuốc --</option>
+            {% for item in medicines %}
+            <option value="{{ item[0].id }}" data-stock="{{ item.total_stock }}" data-unit="{{ item[0].DonVi }}">
+                {{ item[0].TenThuoc }} - (Tồn: {{ item.total_stock }})
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <input type="number" step="0.1" name="lieu_dung" id="lieuDung" class="form-control" placeholder="Liều dùng"
+                   required onchange="checkStock()">
+        </div>
+        <div class="col-md-6">
+            <input type="number" name="so_ngay" id="soNgay" class="form-control" placeholder="Số ngày" required
+                   onchange="checkStock()">
+        </div>
+    </div>
+    <div class="mt-2">
+        <small class="text-muted">Tổng dự kiến: <span id="totalPreview">0</span> viên</small>
+        <small id="stockWarning" class="text-danger" style="display:none; font-weight:bold;">Quá tồn kho!</small>
+    </div>
+    <div class="form-group mt-3">
+        <input type="text" name="ghi_chu" class="form-control" placeholder="Ghi chú...">
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3" id="btnSubmit">Thêm vào bảng kê</button>
 </form>
 
-<table>
+<hr>
+
+<h3>Danh sách thuốc trong toa này</h3>
+<table class="table table-bordered table-striped mt-3 bg-white p-3 rounded shadow-sm">
+    <thead>
     <tr>
         <th>#</th>
         <th>Tên thuốc</th>
         <th>Liều dùng</th>
         <th>Số ngày</th>
-        <th>Đơn vị</th>
-        <th></th>
+        <th>Tổng SL</th>
+        <th>Ghi chú</th>
+        <th>Thao tác</th>
     </tr>
+    </thead>
 
-    {% for m in medicines %}
+    <tbody>
+    {% for detail in toa_thuoc.ds_chi_tiet_thuoc %}
     <tr>
         <td>{{ loop.index }}</td>
-        <td>{{ m.name }}</td>
-        <td>{{ m.dosage }}</td>
-        <td>{{ m.days }}</td>
-        <td>{{ m.unit }}</td>
+        <td>{{ detail.loai_thuoc.TenThuoc }}</td>
+        <td>{{ detail.LieuDung }}</td>
+        <td>{{ detail.SoNgay }}</td>
+        <td>{{ detail.SoLuong }} {{ detail.loai_thuoc.DonVi }}</td>
+
+        <td>{{ detail.GhiChu }}</td>
+
         <td>
-            <form action="/medicine/delete/{{ m.id }}" method="POST">
-                <button>Xóa</button>
+            <form action="/medicine/delete/{{ detail.ThuocId }}" method="POST">
+                <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
+                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
             </form>
         </td>
     </tr>
     {% else %}
     <tr>
-        <td colspan="6">Chưa có thuốc</td>
+        <td colspan="7" class="text-center">Chưa kê thuốc nào</td>
     </tr>
     {% endfor %}
+    </tbody>
 </table>
 
 <form action="/medicine/save" method="POST">
-    <button type="submit">💾 Lưu toa thuốc</button>
+    <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
+    <button class="mb-3 btn btn-success" type="submit">💾 Lưu & Xuất Kho</button>
 </form>
 
 {% endblock %}

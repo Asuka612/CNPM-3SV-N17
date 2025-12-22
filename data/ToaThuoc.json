@@ -1,4 +1,4 @@
 [
-  {"id": 1, "PhieuDieuTriId": 1, "GhiChu": "Uống sau ăn"},
-  {"id": 2, "PhieuDieuTriId": 3, "GhiChu": "Súc miệng sáng tối"}
+  {"id": 1, "PhieuDieuTriId": 1},
+  {"id": 2, "PhieuDieuTriId": 3}
 ]

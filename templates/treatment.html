@@ -1,11 +1,8 @@
-
-
 {% extends 'layout/base.html' %}
 {% block content %}
-
 <div class="container mt-4">
     <h2>Lập Phiếu Điều Trị</h2>
-    <form method="post" action="{{ url_for('create_treatment') }}">
+    <form class="bg-white p-3 rounded shadow-sm mb-3" method="post" action="{{ url_for('create_treatment') }}">
         <div class="mb-3">
             <label>Bác sĩ phụ trách:</label>
             <input type="text" class="form-control" value="{{current_user.nguoi_dung.HoVaTen}}" readonly disabled>
@@ -23,8 +20,7 @@
             <label class="form-label">Chẩn đoán:</label>
             <textarea class="form-control" name="diagnosis" rows="3" placeholder="Nhập chẩn đoán bệnh..."></textarea>
         </div>
-
-        <button type="submit" class="btn btn-primary">Tạo phiếu & Thêm dịch vụ</button>
+        <button type="submit" class="btn btn-primary mb-2">Tạo phiếu & Thêm dịch vụ</button>
     </form>
 </div>
 {% endblock %}

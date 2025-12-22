@@ -1,5 +1,5 @@
 [
-  {"MaLoThuoc": "LO001", "ThuocId": 1, "SoLuongNhap": 1000, "SoLuongTon": 900, "HanSuDung": "2025-12-31"},
-  {"MaLoThuoc": "LO002", "ThuocId": 2, "SoLuongNhap": 500, "SoLuongTon": 450, "HanSuDung": "2025-10-20"},
-  {"MaLoThuoc": "LO003", "ThuocId": 3, "SoLuongNhap": 600, "SoLuongTon": 550, "HanSuDung": "2026-01-15"}
+  {"MaLoThuoc": "LO001", "ThuocId": 1, "SoLuongNhap": 1000, "SoLuongTon": 900, "HanSuDung": "2025-12-31", "active": 1},
+  {"MaLoThuoc": "LO002", "ThuocId": 2, "SoLuongNhap": 500, "SoLuongTon": 450, "HanSuDung": "2025-10-20", "active": 1},
+  {"MaLoThuoc": "LO003", "ThuocId": 3, "SoLuongNhap": 600, "SoLuongTon": 550, "HanSuDung": "2026-01-15", "active": 1}
 ]

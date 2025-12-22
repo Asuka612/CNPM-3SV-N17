@@ -1,58 +1,59 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/box_form.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <header>
     <div class="header-title">
         <i class="fas fa-tooth"></i> Phòng khám Dental Trio
     </div>
-
     <nav>
-
         <!-- TRANG CHỦ -->
-        <a href="{% if current_user.is_authenticated and current_user.Role == UserRole.ADMIN %}/admin{% else %}/{% endif %}">
+        <a href="{% if current_user.is_authenticated %}
+                    {% if current_user.Role == UserRole.ADMIN %}
+                        /admin
+                    {% elif current_user.Role == UserRole.NHASI %}
+                        /dashboard
+                    {% elif current_user.Role == UserRole.KETOAN %}
+                        /cashier
+                    {% else %}
+                        /
+                    {% endif %}
+                {% else %}
+                    /
+                {% endif %}">
             <i class="fa-solid fa-house"></i> Trang chủ
         </a>
-
         <!-- QUẢN LÝ (ADMIN) -->
         {% if current_user.is_authenticated and current_user.Role == UserRole.ADMIN %}
         <div class="dropdown">
             <a>
                 <i class="fa-solid fa-users-gear"></i> Quản lý
             </a>
-
             <div class="dropdown-content">
                 <a href="/admin/users/staff">
                     <i class="fa-solid fa-user-doctor"></i> Nhân viên
                 </a>
-
                 <a href="/admin/users/customers">
                     <i class="fa-solid fa-user"></i> Khách hàng
                 </a>
-
                 <a href="/admin/services">
                     <i class="fa-solid fa-stethoscope"></i> Dịch vụ
                 </a>
-
                 <!-- ✅ THUỐC (MỚI) -->
-     <a href="/admin/lo-thuoc">
-    <i class="fa-solid fa-pills"></i> Lô thuốc
-</a>
-<a href="/admin/accounts">
-    <i class="fa-solid fa-user-lock"></i> Tài khoản
-</a>
-
+                <a href="/admin/lo-thuoc">
+                    <i class="fa-solid fa-pills"></i> Lô thuốc
+                </a>
+                <a href="/admin/accounts">
+                    <i class="fa-solid fa-user-lock"></i> Tài khoản
+                </a>
             </div>
         </div>
         {% endif %}
-
         <!-- DỊCH VỤ (KHÁCH / USER) -->
         {% if not current_user.is_authenticated or current_user.Role != UserRole.ADMIN %}
         <div class="dropdown">
             <a>
                 <i class="fa-solid fa-stethoscope"></i> Dịch vụ
             </a>
-
             <div class="dropdown-content">
                 {% for dv in services %}
                 <a href="/service/{{ dv.id }}">
@@ -62,24 +63,20 @@
             </div>
         </div>
         {% endif %}
-
         <!-- LIÊN HỆ -->
         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tp281973555k@gmail.com" target="_blank">
             <i class="fa-solid fa-phone"></i> Liên hệ
         </a>
-
         <!-- ĐÃ ĐĂNG NHẬP -->
         {% if current_user.is_authenticated %}
         <a href="/profile">
             <img src="{{ current_user.Avatar }}" width="28">
             Chào {{ current_user.nguoi_dung.HoVaTen }}!
         </a>
-
         <a href="/logout">
             <img src="https://cdn-icons-png.flaticon.com/128/1286/1286907.png" width="25">
             Đăng xuất
         </a>
-
         {% else %}
         <!-- CHƯA ĐĂNG NHẬP -->
         <a href="/login">
@@ -88,13 +85,11 @@
             </button>
         </a>
         {% endif %}
-
         <!-- ĐẶT LỊCH (KHÁCH HÀNG) -->
         {% if current_user.is_authenticated and current_user.Role == UserRole.KHACHHANG %}
         <a class="appointment-btn" href="/MakeAppointment">
             Đặt lịch hẹn
         </a>
         {% endif %}
-
     </nav>
 </header>

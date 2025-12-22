@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_caching import Cache
 
 
 app = Flask(__name__)
@@ -10,5 +11,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] ="mysql+pymysql://root:root@localhost/nhak
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["PAGE_SIZE"]=4
 
+app.config['CACHE_TYPE'] = 'SimpleCache'
+app.config['CACHE_DEFAULT_TIMEOUT'] = 300
+
 db = SQLAlchemy(app)
 login = LoginManager(app)
+cache = Cache(app)

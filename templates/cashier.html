@@ -1,67 +1,71 @@
 {%extends 'layout/base.html'%}
-
 {% block content %}
 <div class="container">
     <h2>Thu Ngân - Tính tiền</h2>
-
-    <form method="post" action="/cashier">
-        <div class="mb-3">
+    <form class="bg-white p-3 rounded shadow-sm" method="post" action="/cashier">
+        <div>
             <label for="patient_name" class="form-label">Tên bệnh nhân:</label>
-            <input type="text" class="form-control" id="patient_name" name="patient_name" placeholder="Nhập tên bệnh nhân">
+            <select class="form-select" id="patient_name" name="patient_name">
+                {% for bn in customers %}
+                <option value="{{ bn.id }}">
+                    {{bn.nguoi_dung.HoVaTen}}
+                </option>
+                {% endfor %}
+            </select>
         </div>
-
         <h3>Dịch vụ</h3>
         <table class="table table-bordered table-striped">
             <thead class="table-light">
-                <tr>
-                    <th>Chọn</th>
-                    <th>Tên dịch vụ</th>
-                    <th>Giá (VNĐ)</th>
-                </tr>
+            <tr>
+                <th>Chọn</th>
+                <th>Tên dịch vụ</th>
+                <th>Giá (VNĐ)</th>
+            </tr>
             </thead>
             <tbody>
-                {% for item in treatments %}
-                <tr>
-                    <td><input type="checkbox" name="treat_ids" value="{{ item.id }}"></td>
-                    <td>{{ item.service }}</td>
-                    <td>{{ "{:,}".format(item.cost) }}</td>
-                </tr>
-                {% else %}
-                <tr><td colspan="3" class="text-center text-muted">Chưa có dịch vụ nào</td></tr>
-                {% endfor %}
+            {% for item in treatments %}
+            <tr>
+                <td><input type="checkbox" name="treat_ids" value="{{ item.id }}"></td>
+                <td>{{ item.service }}</td>
+                <td>{{ "{:,}".format(item.cost) }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">Chưa có dịch vụ nào</td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
-
         <h3>Thuốc</h3>
         <table class="table table-bordered table-striped">
             <thead class="table-light">
-                <tr>
-                    <th>Chọn</th>
-                    <th>Tên thuốc</th>
-                    <th>Liều dùng</th>
-                    <th>Số ngày</th>
-                    <th>Đơn vị</th>
-                </tr>
+            <tr>
+                <th>Chọn</th>
+                <th>Tên thuốc</th>
+                <th>Liều dùng</th>
+                <th>Số ngày</th>
+                <th>Đơn vị</th>
+            </tr>
             </thead>
             <tbody>
-                {% for m in medicines %}
-                <tr>
-                    <td><input type="checkbox" name="med_ids" value="{{ m.id }}"></td>
-                    <td>{{ m.name }}</td>
-                    <td>{{ m.dosage }}</td>
-                    <td>{{ m.days }}</td>
-                    <td>{{ m.unit }}</td>
-                </tr>
-                {% else %}
-                <tr><td colspan="5" class="text-center text-muted">Chưa có thuốc nào</td></tr>
-                {% endfor %}
+            {% for m in medicines %}
+            <tr>
+                <td><input type="checkbox" name="med_ids" value="{{ m.id }}"></td>
+                <td>{{ m.name }}</td>
+                <td>{{ m.dosage }}</td>
+                <td>{{ m.days }}</td>
+                <td>{{ m.unit }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">Chưa có thuốc nào</td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
-
         <button type="submit" class="btn btn-primary mt-3">Thanh toán</button>
     </form>
-
     <br>
-    <a href="/" class="btn btn-secondary">Quay về trang chủ</a>
+    <a href="/" class="btn btn-secondary mb-3">Quay về trang chủ</a>
 </div>
 {% endblock %}

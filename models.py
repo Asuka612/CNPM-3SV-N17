@@ -142,7 +142,7 @@ class ChiTietPhieuDieuTri(db.Model):
     __tablename__ = 'ChiTietPhieuDieuTri'
 
     PhieuDieuTriId = Column(Integer, ForeignKey('PhieuDieuTri.id'), primary_key=True, nullable=False)
-    DichVuId = Column(Integer, ForeignKey('DichVu.id'), nullable=False)
+    DichVuId = Column(Integer, ForeignKey('DichVu.id'), primary_key=True, nullable=False)
     SoLuong = Column(Integer, default=1)
     GhiChu = Column(String(255))
 
@@ -166,12 +166,13 @@ class LoThuoc(db.Model):
     SoLuongNhap = Column(Integer)
     SoLuongTon = Column(Integer)
     HanSuDung = Column(Date)
+    active =  Column(Boolean, default=True)
+
 
 class ToaThuoc(Base):
     __tablename__ = 'ToaThuoc'
 
     PhieuDieuTriId = Column(Integer, ForeignKey('PhieuDieuTri.id'), nullable=False)
-    GhiChu = Column(String(250))
 
     ds_chi_tiet_thuoc = relationship('ChiTietToaThuoc', backref='toa_thuoc', lazy=True)
 
@@ -181,8 +182,10 @@ class ChiTietToaThuoc(db.Model):
     ToaThuocId = Column(Integer, ForeignKey('ToaThuoc.id'), nullable=False, primary_key=True)
     ThuocId = Column(Integer, ForeignKey('Thuoc.id'), nullable=False, primary_key=True)
 
-    SoLuong = Column(Integer)
-    CachDung = Column(String(255))
+    SoLuong = Column(Integer,nullable=False)
+    LieuDung = Column(Float, nullable=False)
+    SoNgay = Column(Integer, nullable=False)
+    GhiChu = Column(String(255))
     ThanhTien = Column(Float, default=0.0)
 
     loai_thuoc = relationship('Thuoc', backref='ds_thuoc', lazy=True)
@@ -205,5 +208,79 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
+        # with open("data/ChuyenMon.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(ChuyenMon(**p))
+        #
+        # with open("data/DichVu.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(DichVu(**p))
+        #
+        # with open("data/Thuoc.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(Thuoc(**p))
+        #
+        # with open("data/Admin.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(Admin(**p))
+        #
+        # with open("data/KeToan.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(KeToan(**p))
+        #
+        # with open("data/KhachHang.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(KhachHang(**p))
+        #
+        # with open("data/NhaSi.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(NhaSi(**p))
+        #
+        # with open("data/TaiKhoan.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(TaiKhoan(**p))
+        #
+        # with open("data/PhieuDieuTri.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(PhieuDieuTri(**p))
+        #
+        # with open("data/LichKham.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(LichKham(**p))
+        #
+        # with open("data/LoThuoc.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(LoThuoc(**p))
+        #
+        # with open("data/ToaThuoc.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(ToaThuoc(**p))
+        #
+        # with open("data/HoaDon.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(HoaDon(**p))
+        #
+        # with open("data/ChiTietPhieuDieuTri.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(ChiTietPhieuDieuTri(**p))
+        #
+        # with open("data/ChiTietToaThuoc.json", encoding="utf-8") as f:
+        #     products = json.load(f)
+        #     for p in products:
+        #         db.session.add(ChiTietToaThuoc(**p))
 
         db.session.commit()

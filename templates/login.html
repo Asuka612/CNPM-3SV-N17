@@ -1,27 +1,12 @@
 {%extends 'layout/base.html'%}
-
 {%block content%}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/box_form.css') }}">
 <body>
 <div class="box">
     <h2>Đăng Nhập</h2>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div style="margin-bottom: 15px;">
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }}" style="text-align: center; font-weight: bold;">
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
     <form action="/login" method="POST">
       <input type="text" name="gmail" placeholder="Email" required>
-
         <input type="password" name="password" placeholder="Mật khẩu" required>
-
-
         <button type="submit">Đăng Nhập</button>
     </form>
     <div class="link">
@@ -30,4 +15,3 @@
 </div>
 </body>
 {% endblock %}
-</html>

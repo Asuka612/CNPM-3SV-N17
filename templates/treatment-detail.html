@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <label>Chọn Dịch vụ:</label>
-                    <select class="form-select" name="service_id" required>
+                    <select class="form-select mt-2" name="service_id" required>
                         {% for dv in services %}
                         <option value="{{ dv.id }}">{{ dv.TenDichVu }} - {{ dv.ChiPhi }} VNĐ</option>
                         {% endfor %}
@@ -31,40 +31,53 @@
                     <input type="text" class="form-control" name="note" placeholder="Ghi chú (nếu có)">
                 </div>
                 <div class="col-md-2 align-self-end">
-                    <button type="submit" class="btn btn-success w-100">Lưu</button>
+                    <button type="submit" class="btn btn-success w-100 mb-2">Lưu</button>
                 </div>
             </div>
         </form>
     </div>
 
     <h5>Danh sách dịch vụ đã kê:</h5>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Dịch vụ</th>
-            <th>Số lượng</th>
-            <th>Đơn giá</th>
-            <th>Ghi chú</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for detail in details %}
-        <tr>
-            <td>{{ detail.dich_vu.TenDichVu }}</td>
-            <td>{{ detail.SoLuong }}</td>
-            <td>{{ detail.dich_vu.ChiPhi }}</td>
-            <td>{{ detail.GhiChu }}</td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="4" class="text-center">Chưa có dịch vụ nào được thêm.</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="bg-white p-3 rounded shadow-sm">
+        <table class="table table-bordered mt-3">
+            <thead>
+            <tr>
+                <th>Dịch vụ</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Ghi chú</th>
+                <th>Xóa</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for detail in details %}
+            <tr>
+                <td>{{ detail.dich_vu.TenDichVu }}</td>
+                <td>{{ detail.SoLuong }}</td>
+                <td>{{ detail.dich_vu.ChiPhi }}</td>
+                <td>{{ detail.GhiChu }}</td>
+                <td class="text-center">
+                    <form action="{{ url_for('delete_treatment_detail', phieu_id=phieu.id, dich_vu_id=detail.dich_vu.id) }}"
+                          method="POST"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Bạn có chắc muốn xóa dịch vụ này không?');">
+                            Xóa
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">Chưa có dịch vụ nào được thêm.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <div class="mt-3">
-        <a href="{{url_for('dashboard')}}" class="btn btn-secondary">Hoàn tất / Quay lại</a>
+        <a href="{{url_for('medicine_page',phieu_id=phieu.id)}}" class="btn btn-secondary mb-3">Hoàn tất / Lập toa thuốc</a>
     </div>
 </div>
 {% endblock %}l>

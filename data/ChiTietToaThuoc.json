@@ -1,5 +1,38 @@
 [
-  {"ToaThuocId": 1, "ThuocId": 1, "SoLuong": 10, "CachDung": "Sáng 1, Chiều 1", "ThanhTien": 10000.0},
-  {"ToaThuocId": 1, "ThuocId": 2, "SoLuong": 10, "CachDung": "Sáng 1, Chiều 1", "ThanhTien": 20000.0},
-  {"ToaThuocId": 2, "ThuocId": 4, "SoLuong": 1, "CachDung": "Súc miệng 2 lần/ngày", "ThanhTien": 120000.0}
+  {
+    "ToaThuocId": 1,
+    "ThuocId": 1,
+    "SoLuong": 20,
+    "LieuDung": 2.0,
+    "SoNgay": 10,
+    "GhiChu": "Uống sau khi ăn sáng và tối",
+    "ThanhTien": 40000.0
+  },
+  {
+    "ToaThuocId": 1,
+    "ThuocId": 2,
+    "SoLuong": 10,
+    "LieuDung": 1.0,
+    "SoNgay": 10,
+    "GhiChu": "Uống trước khi đi ngủ",
+    "ThanhTien": 150000.0
+  },
+  {
+    "ToaThuocId": 2,
+    "ThuocId": 3,
+    "SoLuong": 15,
+    "LieuDung": 3.0,
+    "SoNgay": 5,
+    "GhiChu": "Mỗi lần uống cách nhau 4 tiếng",
+    "ThanhTien": 75000.0
+  },
+  {
+    "ToaThuocId": 2,
+    "ThuocId": 4,
+    "SoLuong": 10,
+    "LieuDung": 2.0,
+    "SoNgay": 5,
+    "GhiChu": "Uống sau ăn",
+    "ThanhTien": 20000.0
+  }
 ]
