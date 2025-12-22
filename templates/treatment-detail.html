@@ -1,15 +1,12 @@
 {% extends 'layout/base.html' %}
 {% block content %}
 <div class="container mt-4">
-
     <div class="alert alert-info">
         <h4>Phiếu điều trị #{{ phieu.id }}</h4>
         <p><strong>Khách hàng:</strong> {{ phieu.khach_hang.HoVaTen }}</p>
         <p><strong>Chẩn đoán:</strong> {{ phieu.ChuanDoan }}</p>
     </div>
-
     <hr>
-
     <div class="card p-3 mb-4">
         <h5>Thêm Dịch Vụ Vào Phiếu</h5>
         <form method="POST" action="{{ url_for('treatment_detail', phieu_id=phieu.id) }}">
@@ -36,7 +33,6 @@
             </div>
         </form>
     </div>
-
     <h5>Danh sách dịch vụ đã kê:</h5>
     <div class="bg-white p-3 rounded shadow-sm">
         <table class="table table-bordered mt-3">
@@ -75,7 +71,6 @@
             </tbody>
         </table>
     </div>
-
     <div class="mt-3">
         <a href="{{url_for('medicine_page',phieu_id=phieu.id)}}" class="btn btn-secondary mb-3">Hoàn tất / Lập toa thuốc</a>
     </div>

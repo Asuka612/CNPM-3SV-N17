@@ -1,155 +1,147 @@
 {% extends 'layout/base.html' %}
-
 {% block content %}
-
 {% if mode == 'select' %}
 <div class="container mt-4">
     <h2 class="text-center text-primary mb-4">Danh Sách Phiếu Điều Trị Cần Kê Toa</h2>
-
     <div class="card shadow-sm">
         <div class="card-body">
             <table class="table table-hover table-bordered">
                 <thead class="thead-light">
-                    <tr>
-                        <th style="width: 10%">Mã Phiếu</th>
-                        <th style="width: 30%">Khách Hàng</th>
-                        <th style="width: 40%">Chẩn Đoán</th>
-                        <th style="width: 20%" class="text-center">Hành Động</th>
-                    </tr>
+                <tr>
+                    <th style="width: 10%">Mã Phiếu</th>
+                    <th style="width: 30%">Khách Hàng</th>
+                    <th style="width: 40%">Chẩn Đoán</th>
+                    <th style="width: 20%" class="text-center">Hành Động</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {% if ds_phieu %}
-                        {% for phieu in ds_phieu %}
-                        <tr>
-                            <td><strong>#{{ phieu.id }}</strong></td>
-                            <td>
-                                <i class="fa fa-user-circle text-info"></i>
-                                {{ phieu.khach_hang.HoVaTen if phieu.khach_hang else 'Khách vãng lai' }}
-                            </td>
-
-                            <td>{{ phieu.ChuanDoan if phieu.ChuanDoan else 'Chưa có chẩn đoán' }}</td>
-
-                            <td class="text-center">
-                                <a href="/medicine/{{ phieu.id }}" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-pills"></i> Kê Toa
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="4" class="text-center text-muted py-5">
-                                <i class="fa fa-box-open fa-3x mb-3"></i><br>
-                                Hiện chưa có phiếu điều trị nào cần kê toa.
-                            </td>
-                        </tr>
-                    {% endif %}
+                {% if ds_phieu %}
+                {% for phieu in ds_phieu %}
+                <tr>
+                    <td><strong>#{{ phieu.id }}</strong></td>
+                    <td>
+                        <i class="fa fa-user-circle text-info"></i>
+                        {{ phieu.khach_hang.HoVaTen if phieu.khach_hang else 'Khách vãng lai' }}
+                    </td>
+                    <td>{{ phieu.ChuanDoan if phieu.ChuanDoan else 'Chưa có chẩn đoán' }}</td>
+                    <td class="text-center">
+                        <a href="/medicine/{{ phieu.id }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-pills"></i> Kê Toa
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-5">
+                        <i class="fa fa-box-open fa-3x mb-3"></i><br>
+                        Hiện chưa có phiếu điều trị nào cần kê toa.
+                    </td>
+                </tr>
+                {% endif %}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
 {% else %}
-    <script src="{{ url_for('static', filename='js/medicine.js') }}"></script>
-
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><i class="fa fa-file-prescription text-success"></i> Kê Toa (Phiếu #{{ toa_thuoc.PhieuDieuTriId }})</h3>
-            <a href="/medicine" class="btn btn-outline-secondary btn-sm">
-                <i class="fa fa-arrow-left"></i> Quay lại danh sách
-            </a>
-        </div>
-
-        <div class="row">
-            <div class="col-md-5">
-                <form class="bg-white p-4 rounded shadow-sm h-100" method="POST" action="/medicine/add">
-                    <h5 class="border-bottom pb-2 mb-3">Thêm Thuốc Mới</h5>
-                    <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
-
-                    <div class="form-group">
-                        <label>Chọn thuốc (Kho sẵn có)</label>
-                        <select name="thuoc_id" class="form-control select2" id="thuocSelect" required>
-                            <option value="">-- Tìm tên thuốc --</option>
-                            {% for item in medicines %}
-                            <option value="{{ item[0].id }}" data-stock="{{ item.total_stock }}" data-unit="{{ item[0].DonVi }}">
-                                {{ item[0].TenThuoc }} (Tồn: {{ item.total_stock }} {{ item[0].DonVi }})
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6">
-                            <label>Sáng/Trưa/Chiều</label>
-                            <input type="number" step="0.5" name="lieu_dung" id="lieuDung" class="form-control" placeholder="SL viên/lần" required onchange="checkStock()">
-                        </div>
-                        <div class="col-6">
-                            <label>Số ngày</label>
-                            <input type="number" name="so_ngay" id="soNgay" class="form-control" placeholder="Ngày" required onchange="checkStock()">
-                        </div>
-                    </div>
-
-                    <div class="mt-2 mb-2">
-                         <small class="text-primary font-weight-bold">Tổng cần: <span id="totalPreview">0</span> <span id="unitPreview"></span></small>
-<small id="stockWarning" class="text-danger font-weight-bold" style="display:none;">⚠️ Không đủ hàng tồn kho!</small>                    </div>
-
-                    <div class="form-group">
-                        <label>Cách dùng / Ghi chú</label>
-                        <textarea name="ghi_chu" class="form-control" rows="2" placeholder="VD: Uống sau ăn..."></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-success btn-block" id="btnSubmit">
-                        <i class="fa fa-plus-circle"></i> Thêm vào toa
-                    </button>
-                </form>
-            </div>
-
-            <div class="col-md-7">
-                <div class="bg-white p-4 rounded shadow-sm h-100">
-                    <h5 class="border-bottom pb-2 mb-3">Chi Tiết Toa Thuốc</h5>
-                    <table class="table table-striped table-sm">
-                        <thead>
-                        <tr>
-                            <th>Tên thuốc</th>
-                            <th>SL</th>
-                            <th>Cách dùng</th>
-                            <th>Xóa</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for detail in toa_thuoc.ds_chi_tiet_thuoc %}
-                        <tr>
-                            <td class="font-weight-bold">{{ detail.loai_thuoc.TenThuoc }}</td>
-                            <td>{{ detail.SoLuong }} {{ detail.loai_thuoc.DonVi }}</td>
-                            <td><small>{{ detail.GhiChu }}</small></td>
-                            <td>
-                                <form action="/medicine/delete/{{ detail.ThuocId }}" method="POST">
-                                    <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm border-0" onclick="return confirm('Xóa thuốc này?')">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% else %}
-                        <tr><td colspan="4" class="text-center text-muted">Chưa có thuốc nào trong toa.</td></tr>
+<script src="{{ url_for('static', filename='js/medicine.js') }}"></script>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3><i class="fa fa-file-prescription text-success"></i> Kê Toa (Phiếu #{{ toa_thuoc.PhieuDieuTriId }})</h3>
+        <a href="/medicine" class="btn btn-outline-secondary btn-sm">
+            <i class="fa fa-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <form class="bg-white p-4 rounded shadow-sm h-100" method="POST" action="/medicine/add">
+                <h5 class="border-bottom pb-2 mb-3">Thêm Thuốc Mới</h5>
+                <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
+                <div class="form-group">
+                    <label>Chọn thuốc (Kho sẵn có)</label>
+                    <select name="thuoc_id" class="form-control select2" id="thuocSelect" required>
+                        <option value="">-- Tìm tên thuốc --</option>
+                        {% for item in medicines %}
+                        <option value="{{ item[0].id }}" data-stock="{{ item.total_stock }}"
+                                data-unit="{{ item[0].DonVi }}">
+                            {{ item[0].TenThuoc }} (Tồn: {{ item.total_stock }} {{ item[0].DonVi }})
+                        </option>
                         {% endfor %}
-                        </tbody>
-                    </table>
-
-                    <div class="text-right mt-3">
-                         <form action="/medicine/save" method="POST">
-                            <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
-                            <button class="btn btn-primary btn-lg" type="submit">
-                                <i class="fa fa-save"></i> Lưu & Xuất Kho
-                            </button>
-                        </form>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label>Sáng/Trưa/Chiều</label>
+                        <input type="number" step="0.5" name="lieu_dung" id="lieuDung" class="form-control"
+                               placeholder="SL viên/lần" required onchange="checkStock()">
                     </div>
+                    <div class="col-6">
+                        <label>Số ngày</label>
+                        <input type="number" name="so_ngay" id="soNgay" class="form-control" placeholder="Ngày" required
+                               onchange="checkStock()">
+                    </div>
+                </div>
+                <div class="mt-2 mb-2">
+                    <small class="text-primary font-weight-bold">Tổng cần: <span id="totalPreview">0</span> <span
+                            id="unitPreview"></span></small>
+                    <small id="stockWarning" class="text-danger font-weight-bold" style="display:none;">⚠️ Không đủ hàng
+                        tồn kho!</small></div>
+                <div class="form-group">
+                    <label>Cách dùng / Ghi chú</label>
+                    <textarea name="ghi_chu" class="form-control" rows="2" placeholder="VD: Uống sau ăn..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success btn-block" id="btnSubmit">
+                    <i class="fa fa-plus-circle"></i> Thêm vào toa
+                </button>
+            </form>
+        </div>
+        <div class="col-md-7">
+            <div class="bg-white p-4 rounded shadow-sm h-100">
+                <h5 class="border-bottom pb-2 mb-3">Chi Tiết Toa Thuốc</h5>
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>Tên thuốc</th>
+                        <th>SL</th>
+                        <th>Cách dùng</th>
+                        <th>Xóa</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for detail in toa_thuoc.ds_chi_tiet_thuoc %}
+                    <tr>
+                        <td class="font-weight-bold">{{ detail.loai_thuoc.TenThuoc }}</td>
+                        <td>{{ detail.SoLuong }} {{ detail.loai_thuoc.DonVi }}</td>
+                        <td><small>{{ detail.GhiChu }}</small></td>
+                        <td>
+                            <form action="/medicine/delete/{{ detail.ThuocId }}" method="POST">
+                                <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm border-0"
+                                        onclick="return confirm('Xóa thuốc này?')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">Chưa có thuốc nào trong toa.</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-right mt-3">
+                    <form action="/medicine/save" method="POST">
+                        <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            <i class="fa fa-save"></i> Lưu & Xuất Kho
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endif %}
-
 {% endblock %}
