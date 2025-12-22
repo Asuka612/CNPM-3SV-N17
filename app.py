@@ -14,7 +14,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 from sqlalchemy import func, extract
 from models import TaiKhoan, GioiTinh, UserRole, NhaSi, KhachHang, KeToan, LichKham, PhieuDieuTri, ChiTietPhieuDieuTri, \
-    DichVu, Thuoc, LoThuoc, ChiTietToaThuoc, NguoiDung, ToaThuoc
+    DichVu, Thuoc, LoThuoc, ChiTietToaThuoc, NguoiDung, ToaThuoc, HoaDon
 
 # Load dữ liệu dịch vụ từ file JSON
 
@@ -301,12 +301,7 @@ def medicine_add():
                 GhiChu=ghi_chu,
                 ThanhTien=so_luong_moi * selected_med[0].GiaBan
             )
-
-
             db.session.add(new_detail)
-
-
-
         db.session.commit()
         flash("Đã thêm vào bảng kê (Chưa trừ kho).", "success")
         return redirect(url_for('medicine_page',phieu_id=current_toa.PhieuDieuTriId))
@@ -337,57 +332,46 @@ def medicine_delete(thuoc_id):
         return "Lỗi xóa", 500
 
 
+# app.py
+
 @app.route("/medicine/save", methods=["POST"])
 def medicine_save():
     try:
+        # Lấy ID toa thuốc từ form
         toa_thuoc_id = request.form.get("toa_thuoc_id")
-        current_toa = dao.get_toa_thuoc_by_id(toa_thuoc_id)
 
-        # 1. Lấy tất cả chi tiết trong toa
-        details = ChiTietToaThuoc.query.filter_by(ToaThuocId=toa_thuoc_id).all()
+        # Lấy thông tin toa thuốc để biết nó thuộc Phiếu điều trị nào
+        toa_thuoc = ToaThuoc.query.get(int(toa_thuoc_id))
+        if not toa_thuoc:
+            return "Lỗi: Không tìm thấy toa thuốc", 404
 
-        if not details:
-            flash("Toa thuốc trống, không thể lưu!", "warning")
-            return redirect(url_for('medicine_page',phieu_id=current_toa.PhieuDieuTriId))
-
-        # 2. Duyệt qua từng thuốc để trừ kho
-        # Dùng transaction để đảm bảo: Trừ thành công hết mới lưu, lỗi 1 cái là hoàn tác hết
-        error_occurred = False
-
+        # 1. TRỪ KHO (Logic cũ của bạn)
+        details = toa_thuoc.ds_chi_tiet_thuoc
         for item in details:
-            # Gọi hàm trừ kho FIFO cho từng món
-            # Hàm này trả về True/False (bạn cần sửa hàm dao để trả về boolean như hướng dẫn trước)
-            # Hoặc kiểm tra exception
-
-            # Check tồn kho lần cuối trước khi trừ thật
+            # Gọi hàm trừ kho FIFO (đảm bảo hàm này trong dao.py trả về True/False)
             stock_ok = dao.deduct_stock_fifo(item.ThuocId, item.SoLuong)
-
             if not stock_ok:
-                error_occurred = True
-                flash(f"Lỗi: Thuốc ID {item.ThuocId} không đủ tồn kho để xuất!", "error")
-                break  # Dừng lại ngay
+                db.session.rollback()
+                flash(f"Lỗi: Thuốc {item.loai_thuoc.TenThuoc} không đủ tồn kho!", "danger")
+                return redirect(url_for('medicine_page', phieu_id=toa_thuoc.PhieuDieuTriId))
 
-        if error_occurred:
-            # Nếu có lỗi, rollback toàn bộ quá trình trừ kho nãy giờ
-            db.session.rollback()
-            return redirect(url_for('medicine_page',phieu_id=current_toa.PhieuDieuTriId))
+        # 2. TẠO HÓA ĐƠN NHÁP (Logic MỚI)
+        # Gọi hàm tạo hóa đơn cho phiếu điều trị tương ứng
+        dao.create_draft_invoice(toa_thuoc.PhieuDieuTriId)
 
-        # 3. Nếu mọi thứ OK
-        # Có thể cập nhật trạng thái ToaThuoc là "DA_HOAN_THANH" nếu bạn có cột status
-        # toa = ToaThuoc.query.get(toa_thuoc_id)
-        # toa.TrangThai = 'DONE'
+        # 3. Commit tất cả thay đổi (Trừ kho + Tạo hóa đơn)
+        db.session.commit()
 
-        db.session.commit()  # Chốt trừ kho
-        flash("Đã lưu toa thuốc và xuất kho thành công!", "success")
+        flash("Đã lưu toa thuốc và chuyển sang bộ phận thu ngân!", "success")
 
-        # Chuyển hướng về trang danh sách bệnh nhân hoặc in hóa đơn
-        return redirect(url_for('medicine_page', phieu_id=current_toa.PhieuDieuTriId))  # Hoặc url_for('invoice_page')
+        # Chuyển hướng về danh sách phiếu khám hoặc trang dashboard
+        return redirect(url_for('dashboard'))  # Hoặc trang nào bạn muốn
 
     except Exception as e:
         db.session.rollback()
-        print(e)
-        flash("Có lỗi xảy ra khi lưu toa.", "error")
-        return redirect(url_for('medicine_page'))
+        print(f"Lỗi: {e}")
+        flash("Có lỗi xảy ra khi lưu toa thuốc.", "danger")
+        return redirect(request.referrer)
 
 
 # ------------------- Appointment -------------------
@@ -446,56 +430,46 @@ def get_user(user_id):
 
 
 # ------------------- Cashier / Bills -------------------
-BILLS_FILE = os.path.join(DATA_DIR, "bills.json")
-
-
-def load_bills():
-    if not os.path.exists(DATA_DIR):
-        os.makedirs(DATA_DIR)
-    if not os.path.exists(BILLS_FILE):
-        with open(BILLS_FILE, "w", encoding="utf-8") as f:
-            json.dump([], f)
-    with open(BILLS_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def save_bills(bills):
-    with open(BILLS_FILE, "w", encoding="utf-8") as f:
-        json.dump(bills, f, ensure_ascii=False, indent=2)
-
-
 @app.route("/cashier", methods=["GET", "POST"])
+@login_required  # Đảm bảo người dùng đã đăng nhập
 def cashier_page():
-    services = dao.load_dich_vu()
-    medicines = dao.load_thuoc()
+    unpaid_bills = dao.get_unpaid_bills()
+    bill_details = None
+
     if request.method == "POST":
-        name = request.form.get("patient_name", "Khách")
-        selected_treat_ids = request.form.getlist("treat_ids")
-        selected_med_ids = request.form.getlist("med_ids")
+        action = request.form.get("action")
+        phieu_id = request.form.get("phieu_id")
 
-        selected_treats = [t for t in services if str(t["id"]) in selected_treat_ids]
-        selected_medicines = [m for m in medicines if str(m["id"]) in selected_med_ids]
+        if phieu_id:
+            bill_details = dao.get_bill_details(phieu_id)
 
-        total_treat = sum(t.get("cost", 0) for t in selected_treats)
-        total_med = sum(m.get("price", 0) for m in selected_medicines)
-        total = total_treat + total_med
+            if action == "pay" and bill_details:
+                try:
+                    # LẤY ID CỦA KẾ TOÁN ĐANG ĐĂNG NHẬP
+                    # current_user là object TaiKhoan, ta lấy NguoiDungId của nó
+                    ke_toan_id = current_user.NguoiDungId
 
-        bill = {
-            "id": int(datetime.now().timestamp()),
-            "patient_name": name,
-            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "treatments": selected_treats,
-            "medicines": selected_medicines,
-            "total": total
-        }
-        bills = load_bills()
-        bills.append(bill)
-        save_bills(bills)
-        return render_template("receipt.html", bill=bill)
+                    # GỌI HÀM DAO VỚI ID KẾ TOÁN
+                    dao.save_payment(
+                        phieu_id=phieu_id,
+                        tong_tien=bill_details['tong_cong'],
+                        ke_toan_id=ke_toan_id
+                    )
 
-    return render_template("cashier.html", services=services, medicines=medicines)
+                    flash("Thanh toán thành công!", "success")
+                    return redirect(url_for('cashier_page'))  # Load lại trang để reset
 
+                except Exception as e:
+                    # db.session.rollback() # Thường rollback được xử lý trong DAO nếu cần
+                    print(e)
+                    flash("Lỗi hệ thống: " + str(e), "error")
 
+    # ... (Phần logic GET hiển thị chi tiết khi chưa bấm pay)
+    # Nếu request là POST nhưng action không phải pay (ví dụ xem chi tiết)
+    if request.method == "POST" and request.form.get("phieu_id"):
+        bill_details = dao.get_bill_details(request.form.get("phieu_id"))
+
+    return render_template("cashier.html", unpaid_bills=unpaid_bills, bill=bill_details)
 @app.route("/profile")
 def profile():
     if not current_user.is_authenticated:

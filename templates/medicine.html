@@ -82,10 +82,8 @@
     {% endfor %}
     </tbody>
 </table>
-
 <form action="/medicine/save" method="POST">
     <input type="hidden" name="toa_thuoc_id" value="{{ toa_thuoc.id }}">
     <button class="mb-3 btn btn-success" type="submit">💾 Lưu & Xuất Kho</button>
 </form>
-
 {% endblock %}
