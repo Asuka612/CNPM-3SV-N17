@@ -23,10 +23,6 @@
                 </div>
 
                 <div class="col-md-2">
-                    <input name="so_luong_ton" class="form-control" type="number" placeholder="SL tồn">
-                </div>
-
-                <div class="col-md-2">
                     <input name="han_su_dung" class="form-control" type="date">
                 </div>
 
@@ -42,7 +38,6 @@
                         <th>Mã lô</th>
                         <th>Thuốc ID</th>
                         <th>SL nhập</th>
-                        <th>SL tồn</th>
                         <th>Hạn sử dụng</th>
                         <th>Thao tác</th>
                     </tr>
@@ -53,7 +48,6 @@
                         <td>{{ lo.MaLoThuoc }}</td>
                         <td>{{ lo.ThuocId }}</td>
                         <td>{{ lo.SoLuongNhap }}</td>
-                        <td>{{ lo.SoLuongTon }}</td>
                         <td>{{ lo.HanSuDung }}</td>
                         <td>
                             <a href="/admin/lo-thuoc/delete/{{ lo.MaLoThuoc }}"
