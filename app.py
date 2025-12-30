@@ -620,32 +620,6 @@ def get_revenue_chart_data():
     except Exception as e:
         print("Lỗi API Biểu đồ:", e)
         return jsonify({"error": str(e)}), 500
-
-
-@app.route("/admin/users/staff")
-def admin_staff():
-    if not current_user.is_authenticated or current_user.Role != UserRole.ADMIN:
-        return redirect("/login")
-    doctors = NhaSi.query.filter_by(active=True).all()
-    accountants = KeToan.query.filter_by(active=True).all()
-    return render_template(
-        "Admin/admin_staff.html",
-        doctors=doctors,
-        accountants=accountants
-    )
-
-
-@app.route("/admin/users/customers")
-def admin_customers():
-    if not current_user.is_authenticated or current_user.Role != UserRole.ADMIN:
-        return redirect("/login")
-    customers = KhachHang.query.filter_by(active=True).all()
-    return render_template(
-        "Admin/admin_customers.html",
-        customers=customers
-    )
-
-
 @app.route('/admin/services')
 @login_required
 def admin_services():
@@ -778,33 +752,46 @@ def admin_accounts():
         accounts=accounts,
         nguoidung_chua_co_tk=nguoidung_chua_co_tk
     )
-
-
 @app.route("/admin/accounts/add", methods=["POST"])
 @login_required
 def admin_add_account():
     if current_user.Role != UserRole.ADMIN:
         return redirect("/")
-    nguoidung_id = request.form.get("nguoidung_id")
+
+    hoten = request.form.get("hoten")
     email = request.form.get("email")
     password = request.form.get("password")
     role = request.form.get("role")
+
+    # 1. Kiểm tra email đã tồn tại chưa
+    if TaiKhoan.query.filter_by(Email=email).first():
+        flash("Email đã tồn tại!", "danger")
+        return redirect("/admin/accounts")
+
+    # 2. Tạo người dùng mới
+    nguoidung = NguoiDung(HoVaTen=hoten)
+
+    # 3. Mã hóa mật khẩu
     hashed = hashlib.md5(password.encode("utf-8")).hexdigest()
+
+    # 4. Tạo tài khoản
     tk = TaiKhoan(
-        NguoiDungId=nguoidung_id,
         Email=email,
         MatKhau=hashed,
-        Role=UserRole[role]
+        Role=UserRole[role],
+        nguoi_dung=nguoidung
     )
+
     try:
+        db.session.add(nguoidung)
         db.session.add(tk)
         db.session.commit()
         flash("Thêm tài khoản thành công!", "success")
     except Exception as e:
         db.session.rollback()
-        flash("Lỗi thêm tài khoản: " + str(e), "danger")
-    return redirect("/admin/accounts")
+        flash("Lỗi: " + str(e), "danger")
 
+    return redirect("/admin/accounts")
 
 @app.route("/admin/accounts/delete/<int:account_id>")
 @login_required

@@ -148,7 +148,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Mã lô</th>
                 <th>Tên thuốc</th>
                 <th>Số lượng tồn</th>
             </tr>
@@ -156,7 +155,6 @@
             <tbody>
             {% for lot in stats.low_stock_medicines %}
             <tr>
-                <td>{{ lot.MaLoThuoc }}</td>
                 <td>{{ lot.loai_thuoc.TenThuoc }}</td>
                 <td>{{ lot.SoLuongTon }}</td>
             </tr>
