@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const timePicker = flatpickr("#time", {
         enableTime: true,
         noCalendar: true,
-        dateFormat: "H:i", // Bắt buộc định dạng 24h (H viết hoa)
-        time_24hr: true,   // Bật chế độ 24h
+        dateFormat: "H:i",
+        time_24hr: true,
         minTime: "08:00",
         maxTime: "17:00",
-        minuteIncrement: 30 // (Tùy chọn) Chỉ cho chọn chẵn 30 phút cho đẹp
+        minuteIncrement: 30
     });
 
     // 2. Chặn ngày quá khứ

@@ -1,14 +1,30 @@
 {%extends 'layout/base.html'%}
+
 {%block content%}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/box_form.css') }}">
 <script src="{{ url_for('static', filename='js/MakeAppointment.js') }}"></script>
 <body>
+
+
 <div class="box">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="flash {{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
     <form action="/MakeAppointment" method="POST">
+
         <div class="mb-3 mt-3">
             <label for="name" class="form-label">Họ và tên:</label>
             <input type="text" class="form-control" id="name" placeholder="Hãy nhập tên của bạn" name="name" required>
         </div>
+
         <div>
             <label for="day">Chọn ngày:</label>
             <input type="date" class="form-control" id="day" name="day" required>
@@ -19,6 +35,7 @@
                    required>
             <small id="timeHelp" class="form-text text-danger"></small>
         </div>
+
         <div class="mb-3">
             <label for="dentist" class="form-label">Bác sĩ:</label>
             <select class="form-select" id="dentist" name="dentist">
@@ -42,4 +59,5 @@
 </div>
 </body>
 {%endblock%}
+
 </html>
