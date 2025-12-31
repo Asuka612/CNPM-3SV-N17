@@ -4,11 +4,9 @@
 <div class="profile-wrapper">
     <div class="profile-container">
         <h2>Trang cá nhân</h2>
-        <!-- Hiển thị avatar -->
         <div class="profile-avatar">
             <img src="{{ user.Avatar }}" width="150" alt="Avatar">
         </div>
-        <!-- Form chỉnh sửa thông tin cá nhân -->
         <form action="/profile/update" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label>Họ và Tên:</label>

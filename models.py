@@ -103,7 +103,7 @@ class TaiKhoan(Base, UserMixin):
 # ================= SPECIALIZATION =================
 class ChuyenMon(Base):
     __tablename__ = 'ChuyenMon'
-    TenChuyenMon = Column(String(150), nullable=False)  # Đổi name -> TenChuyenMon cho đồng bộ
+    TenChuyenMon = Column(String(150), nullable=False)
     MoTa = Column(String(255))
 
 # ================= CLINIC OPERATIONS =================
